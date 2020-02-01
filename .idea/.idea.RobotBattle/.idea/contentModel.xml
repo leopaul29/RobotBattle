@@ -288,6 +288,9 @@
           <e p="BattleManager.cs" t="Include" />
           <e p="ConstValue.cs" t="Include" />
           <e p="MessageBuilder.cs" t="Include" />
+          <e p="Robot.cs" t="Include" />
+          <e p="SoundManager.cs" t="Include" />
+          <e p="Weapon.cs" t="Include" />
         </e>
       </e>
       <e p="obj" t="ExcludeRecursive" />
