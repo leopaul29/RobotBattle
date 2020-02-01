@@ -121,9 +121,9 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &48280487 stripped
+--- !u!114 &89994678 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 48280487, guid: 98bc778d2fdce45469746bf9cfd41fb8,
+  m_CorrespondingSourceObject: {fileID: 6852022836196684367, guid: 98bc778d2fdce45469746bf9cfd41fb8,
     type: 3}
   m_PrefabInstance: {fileID: 1759277722}
   m_PrefabAsset: {fileID: 0}
@@ -294,12 +294,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player1AttackRightArmButton: {fileID: 549808275}
-  player1AttackLeftArmButton: {fileID: 1787801324}
+  player1AttackLeftArmButton: {fileID: 1759277729}
   player1RepairRightArmButton: {fileID: 403253541}
   player1RepairLeftArmButton: {fileID: 749838728}
   player1RepairBodyButton: {fileID: 1653053874}
-  player2AttackRightArmButton: {fileID: 1685138016}
-  player2AttackLeftArmButton: {fileID: 48280487}
+  player2AttackRightArmButton: {fileID: 1759277728}
+  player2AttackLeftArmButton: {fileID: 89994678}
   player2RepairRightArmButton: {fileID: 489938073}
   player2RepairLeftArmButton: {fileID: 1850491830}
   player2RepairBodyButton: {fileID: 1093554225}
@@ -345,18 +345,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a91a77c2f3f1f045989c5f064090083, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1685138016 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1685138016, guid: 98bc778d2fdce45469746bf9cfd41fb8,
-    type: 3}
-  m_PrefabInstance: {fileID: 1759277722}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a91a77c2f3f1f045989c5f064090083, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1759277722
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -369,10 +357,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI Background
       objectReference: {fileID: 0}
-    - target: {fileID: 2692580232186098989, guid: 98bc778d2fdce45469746bf9cfd41fb8,
+    - target: {fileID: 1681651235969649612, guid: 98bc778d2fdce45469746bf9cfd41fb8,
         type: 3}
-      propertyPath: m_FontData.m_FontSize
-      value: 40
+      propertyPath: m_Text
+      value: "\u3042\u3042\u3042\u3042"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1681651236253826202, guid: 98bc778d2fdce45469746bf9cfd41fb8,
+        type: 3}
+      propertyPath: m_Text
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8087700387365050885, guid: 98bc778d2fdce45469746bf9cfd41fb8,
         type: 3}
@@ -429,11 +422,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8752516446699067298, guid: 98bc778d2fdce45469746bf9cfd41fb8,
-        type: 3}
-      propertyPath: m_FontData.m_FontSize
-      value: 40
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98bc778d2fdce45469746bf9cfd41fb8, type: 3}
 --- !u!114 &1759277723 stripped
@@ -484,9 +472,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1787801324 stripped
+--- !u!114 &1759277728 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1787801324, guid: 98bc778d2fdce45469746bf9cfd41fb8,
+  m_CorrespondingSourceObject: {fileID: 8970398137318841628, guid: 98bc778d2fdce45469746bf9cfd41fb8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1759277722}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a91a77c2f3f1f045989c5f064090083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1759277729 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1934188734862369900, guid: 98bc778d2fdce45469746bf9cfd41fb8,
     type: 3}
   m_PrefabInstance: {fileID: 1759277722}
   m_PrefabAsset: {fileID: 0}

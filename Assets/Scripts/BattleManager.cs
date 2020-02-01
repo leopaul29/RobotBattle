@@ -185,18 +185,18 @@ public class BattleManager : MonoBehaviour
             if (battleCommandType == BattleCommandType.AttackRightArm)
             {
                 (player == 1 ? player1AttackRightArmButton : player2AttackRightArmButton).SetColor(ConstValue.ButtonRed);
-                (player == 1 ? player1RepairRightArmButton : player2RepairRightArmButton).SetColor(ConstValue.ButtonRed);
+                (player == 1 ? player1RepairRightArmButton : player2RepairRightArmButton).SetColor(ConstValue.ButtonGreen);
             }
             else
             {
                 (player == 1 ? player1AttackLeftArmButton : player2AttackLeftArmButton).SetColor(ConstValue.ButtonRed);
-                (player == 1 ? player1RepairLeftArmButton : player2RepairLeftArmButton).SetColor(ConstValue.ButtonRed);
+                (player == 1 ? player1RepairLeftArmButton : player2RepairLeftArmButton).SetColor(ConstValue.ButtonGreen);
             }
         }
 
         if (attackResult.IsJustBodyBroken)
         {
-            (player == 1 ? player2RepairBodyButton : player1RepairBodyButton).SetColor(ConstValue.ButtonRed);
+            (player == 1 ? player2RepairBodyButton : player1RepairBodyButton).SetColor(ConstValue.ButtonGreen);
         }
     }
 
