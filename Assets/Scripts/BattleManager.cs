@@ -100,6 +100,7 @@ public class BattleManager : MonoBehaviour
         switch (_currentBattleState)
         {
             case BattleState.CommandWaiting:
+                _currentBattleState = BattleState.CommandResult;
                 
                 var attackerRobot = _currentPlayer == 1 ? _player1Robot : _player2Robot;
                 var defenderRobot = _currentPlayer == 1 ? _player2Robot : _player1Robot;
@@ -115,12 +116,10 @@ public class BattleManager : MonoBehaviour
                     case BattleCommandType.RepairBody:
                         break;
                 }
-               
-                
                 
                 var playerText = _currentPlayer == 1 ? player1Text : player2Text;
                 playerText.text = _messageBuilder.GetAttackMessage(_currentPlayer, battleCommandType);
-                _currentBattleState = BattleState.CommandResult;
+               
                 break;
         }
     }
