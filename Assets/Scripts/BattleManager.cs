@@ -8,17 +8,17 @@ using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
 {
-    [SerializeField] private Button player1AttackRightArmButton;
-    [SerializeField] private Button player1AttackLeftArmButton;
-    [SerializeField] private Button player1RepairRightArmButton;
-    [SerializeField] private Button player1RepairLeftArmButton;
-    [SerializeField] private Button player1RepairBodyButton;
+    [SerializeField] private BattleCommandButton player1AttackRightArmButton;
+    [SerializeField] private BattleCommandButton player1AttackLeftArmButton;
+    [SerializeField] private BattleCommandButton player1RepairRightArmButton;
+    [SerializeField] private BattleCommandButton player1RepairLeftArmButton;
+    [SerializeField] private BattleCommandButton player1RepairBodyButton;
     
-    [SerializeField] private Button player2AttackRightArmButton;
-    [SerializeField] private Button player2AttackLeftArmButton;
-    [SerializeField] private Button player2RepairRightArmButton;
-    [SerializeField] private Button player2RepairLeftArmButton;
-    [SerializeField] private Button player2RepairBodyButton;
+    [SerializeField] private BattleCommandButton player2AttackRightArmButton;
+    [SerializeField] private BattleCommandButton player2AttackLeftArmButton;
+    [SerializeField] private BattleCommandButton player2RepairRightArmButton;
+    [SerializeField] private BattleCommandButton player2RepairLeftArmButton;
+    [SerializeField] private BattleCommandButton player2RepairBodyButton;
 
     [SerializeField] private Text player1Text;
     [SerializeField] private Text player2Text;
@@ -49,17 +49,30 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
-        player1AttackRightArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.AttackRightArm, 1));
-        player1AttackLeftArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.AttackLeftArm, 1));
-        player1RepairRightArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairRightArm, 1));
-        player1RepairLeftArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairLeftArm, 1));
-        player1RepairBodyButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairBody, 1));
+        player1AttackRightArmButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.AttackRightArm, 1));
+        player1AttackLeftArmButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.AttackLeftArm, 1));
+        player1RepairRightArmButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairRightArm, 1));
+        player1RepairLeftArmButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairLeftArm, 1));
+        player1RepairBodyButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairBody, 1));
         
-        player2AttackRightArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.AttackRightArm, 2));
-        player2AttackLeftArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.AttackLeftArm, 2));
-        player2RepairRightArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairRightArm, 2));
-        player2RepairLeftArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairLeftArm, 2));
-        player2RepairBodyButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairBody, 2));
+        player2AttackRightArmButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.AttackRightArm, 2));
+        player2AttackLeftArmButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.AttackLeftArm, 2));
+        player2RepairRightArmButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairRightArm, 2));
+        player2RepairLeftArmButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairLeftArm, 2));
+        player2RepairBodyButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairBody, 2));
+        
+        player1AttackRightArmButton.SetColor(ConstValue.ButtonBlue);
+        player1AttackLeftArmButton.SetColor(ConstValue.ButtonBlue);
+        player1RepairRightArmButton.SetColor(ConstValue.ButtonGray);
+        player1RepairLeftArmButton.SetColor(ConstValue.ButtonGray);
+        player1RepairBodyButton.SetColor(ConstValue.ButtonGray);
+
+        player2AttackRightArmButton.SetColor(ConstValue.ButtonBlue);
+        player2AttackLeftArmButton.SetColor(ConstValue.ButtonBlue);
+        player2RepairRightArmButton.SetColor(ConstValue.ButtonGray);
+        player2RepairLeftArmButton.SetColor(ConstValue.ButtonGray);
+        player2RepairBodyButton.SetColor(ConstValue.ButtonGray);
+        
         var weaponParameter = new Weapon.WeaponParameter
         {
             Damage = 10,
@@ -122,18 +135,62 @@ public class BattleManager : MonoBehaviour
         var defenderRobot = _currentPlayer == 1 ? _player2Robot : _player1Robot;
 
         var playerText = _currentPlayer == 1 ? player1Text : player2Text;
+        BattleCommandButton battleCommandButton;
         switch (battleCommandType)
         {
             case BattleCommandType.AttackRightArm:
             case BattleCommandType.AttackLeftArm:
                 var attackResult = attackerRobot.Attack(battleCommandType, defenderRobot);
                 playerText.text = _messageBuilder.GetAttackMessage(_currentPlayer, battleCommandType, attackResult);
+                ChangeButtonColorAfterAttack(battleCommandType, attackResult, player);
                 break;
             case BattleCommandType.RepairRightArm:
             case BattleCommandType.RepairLeftArm:
             case BattleCommandType.RepairBody:
                 attackerRobot.Repair(battleCommandType);
                 playerText.text = _messageBuilder.GetRepairMessage(battleCommandType);
+                ChangeRepairButtonColor(battleCommandType, player);
+                break;
+        }
+    }
+
+    private void ChangeButtonColorAfterAttack(BattleCommandType battleCommandType, Robot.AttackResult attackResult,
+        int player)
+    {
+        if (attackResult.IsJustWeaponBroken)
+        {
+            if (battleCommandType == BattleCommandType.AttackRightArm)
+            {
+                (player == 1 ? player1AttackRightArmButton : player2AttackRightArmButton).SetColor(ConstValue.ButtonRed);
+                (player == 1 ? player1RepairRightArmButton : player2RepairRightArmButton).SetColor(ConstValue.ButtonRed);
+            }
+            else
+            {
+                (player == 1 ? player1AttackLeftArmButton : player2AttackLeftArmButton).SetColor(ConstValue.ButtonRed);
+                (player == 1 ? player1RepairLeftArmButton : player2RepairLeftArmButton).SetColor(ConstValue.ButtonRed);
+            }
+        }
+
+        if (attackResult.IsJustBodyBroken)
+        {
+            (player == 1 ? player2RepairBodyButton : player1RepairBodyButton).SetColor(ConstValue.ButtonRed);
+        }
+    }
+
+    private void ChangeRepairButtonColor(BattleCommandType battleCommandType, int player)
+    {
+        switch (battleCommandType)
+        {
+            case BattleCommandType.RepairRightArm:
+                (player == 1 ? player1RepairRightArmButton : player2RepairRightArmButton).SetColor(ConstValue.ButtonGray);
+                (player == 1 ? player1AttackRightArmButton : player2AttackRightArmButton).SetColor(ConstValue.ButtonBlue);
+                break;
+            case BattleCommandType.RepairLeftArm:
+                (player == 1 ? player1RepairLeftArmButton : player2RepairLeftArmButton).SetColor(ConstValue.ButtonGray);
+                (player == 1 ? player1AttackLeftArmButton : player2AttackLeftArmButton).SetColor(ConstValue.ButtonBlue);
+                break;
+            case BattleCommandType.RepairBody:
+                (player == 1 ? player1RepairBodyButton : player2RepairBodyButton).SetColor(ConstValue.ButtonGray);
                 break;
         }
     }

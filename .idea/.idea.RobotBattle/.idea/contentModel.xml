@@ -285,6 +285,7 @@
           </e>
         </e>
         <e p="Scripts" t="Include">
+          <e p="BattleCommandButton.cs" t="Include" />
           <e p="BattleManager.cs" t="Include" />
           <e p="ConstValue.cs" t="Include" />
           <e p="MessageBuilder.cs" t="Include" />
