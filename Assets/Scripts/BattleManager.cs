@@ -50,6 +50,10 @@ public class BattleManager : MonoBehaviour
     private void Start()
     {
         player1AttackRightArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.AttackRightArm));
+        player1AttackLeftArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.AttackLeftArm));
+        player1RepairRightArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairRightArm));
+        player1RepairLeftArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairLeftArm));
+        player1RepairBodyButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairBody));
 
         var weaponParameter = new Weapon.WeaponParameter
         {
@@ -97,29 +101,27 @@ public class BattleManager : MonoBehaviour
 
     private void OnClickButton(BattleCommandType battleCommandType)
     {
-        switch (_currentBattleState)
+        if (_currentBattleState != BattleState.CommandWaiting)
         {
-            case BattleState.CommandWaiting:
-                _currentBattleState = BattleState.CommandResult;
-                
-                var attackerRobot = _currentPlayer == 1 ? _player1Robot : _player2Robot;
-                var defenderRobot = _currentPlayer == 1 ? _player2Robot : _player1Robot;
+            return;
+        }
+        
+        _currentBattleState = BattleState.CommandResult;
+        
+        var attackerRobot = _currentPlayer == 1 ? _player1Robot : _player2Robot;
+        var defenderRobot = _currentPlayer == 1 ? _player2Robot : _player1Robot;
 
-                switch (battleCommandType)
-                {
-                    case BattleCommandType.AttackRightArm:
-                    case BattleCommandType.AttackLeftArm:
-                        var attackResult = attackerRobot.Attack(battleCommandType, defenderRobot);
-                        break;
-                    case BattleCommandType.RepairRightArm:
-                    case BattleCommandType.RepairLeftArm:
-                    case BattleCommandType.RepairBody:
-                        break;
-                }
-                
-                var playerText = _currentPlayer == 1 ? player1Text : player2Text;
-                playerText.text = _messageBuilder.GetAttackMessage(_currentPlayer, battleCommandType);
-               
+        var playerText = _currentPlayer == 1 ? player1Text : player2Text;
+        switch (battleCommandType)
+        {
+            case BattleCommandType.AttackRightArm:
+            case BattleCommandType.AttackLeftArm:
+                var attackResult = attackerRobot.Attack(battleCommandType, defenderRobot);
+                playerText.text = _messageBuilder.GetAttackMessage(_currentPlayer, battleCommandType, attackResult);
+                break;
+            case BattleCommandType.RepairRightArm:
+            case BattleCommandType.RepairLeftArm:
+            case BattleCommandType.RepairBody:
                 break;
         }
     }
