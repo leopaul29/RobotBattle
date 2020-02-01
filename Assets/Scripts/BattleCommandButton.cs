@@ -6,12 +6,25 @@ using UnityEngine.UI;
 
 public class BattleCommandButton : MonoBehaviour
 {
-    [HideInInspector] public Button ButtonObject;
+    private Button _buttonObject;
+
+    [HideInInspector]
+    public Button ButtonObject
+    {
+        get
+        {
+            if (_buttonObject == null)
+            {
+                _buttonObject = GetComponent<Button>();
+            }
+            return _buttonObject;
+        }
+    }
+
     private Image ImageObject;
     private Text DamageText;
     void Start()
     {
-        ButtonObject = GetComponent<Button>();
         ImageObject = GetComponent<Image>();
         DamageText = GetComponentsInChildren<Text>().ToList().FirstOrDefault(x => x.name == "DamageText");
     }
