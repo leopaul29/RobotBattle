@@ -30,6 +30,7 @@ public class Robot
     }
 
     public int Hp { get; set; }
+    public bool IsDead => Hp <= 0;
     private int _player;
     private int _bodyBrokenPoint;
     private int _defaultBodyBrokenPoint;

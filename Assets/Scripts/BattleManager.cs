@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -78,10 +79,16 @@ public class BattleManager : MonoBehaviour
             case BattleState.CommandWaiting:
                 break;
             case BattleState.CommandResult:
+                if (_player1Robot.IsDead || _player2Robot.IsDead)
+                {
+                    _currentBattleState = BattleState.BattleEnd;
+                    break;
+                }
                 _currentPlayer = _currentPlayer == 1 ? 2 : 1; 
                 _currentBattleState = BattleState.TurnStart;
                 break;
             case BattleState.BattleEnd:
+                SceneManager.LoadScene("Result");
                 break;
         }
     }
