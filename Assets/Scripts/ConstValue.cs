@@ -11,4 +11,11 @@ public static class ConstValue
 
     public static readonly float BrokenWeaponDamageRate = 0.5f;
     public static readonly float BrokenBodyDamageRate = 1.5f;
+
+    public static readonly int AttackCriticalRate = 20;
+    public static readonly int AttackFumbleRate = 10;
+    public static readonly int RepairCriticalRate = 10;
+    public static readonly int RepairFumbleRate = 30;
+    
+    public static readonly float CriticalDamageRate = 2.0f;
 }

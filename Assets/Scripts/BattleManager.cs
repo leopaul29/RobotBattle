@@ -24,7 +24,6 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Text player2Text;
     [SerializeField] private Text player1Hp;
     [FormerlySerializedAs("player2HP")] [SerializeField] private Text player2Hp;
-
     
     private readonly MessageBuilder _messageBuilder = new MessageBuilder();
     private Robot _player1Robot;
@@ -63,47 +62,6 @@ public class BattleManager : MonoBehaviour
         player2RepairRightArmButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairRightArm, 2));
         player2RepairLeftArmButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairLeftArm, 2));
         player2RepairBodyButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairBody, 2));
-        
-        player1AttackRightArmButton.SetColor(ConstValue.ButtonBlue);
-        player1AttackLeftArmButton.SetColor(ConstValue.ButtonBlue);
-        player1RepairRightArmButton.SetColor(ConstValue.ButtonGray);
-        player1RepairLeftArmButton.SetColor(ConstValue.ButtonGray);
-        player1RepairBodyButton.SetColor(ConstValue.ButtonGray);
-
-        player2AttackRightArmButton.SetColor(ConstValue.ButtonBlue);
-        player2AttackLeftArmButton.SetColor(ConstValue.ButtonBlue);
-        player2RepairRightArmButton.SetColor(ConstValue.ButtonGray);
-        player2RepairLeftArmButton.SetColor(ConstValue.ButtonGray);
-        player2RepairBodyButton.SetColor(ConstValue.ButtonGray);
-        
-        var rightWeaponParameter = new Weapon.WeaponParameter
-        {
-            Damage = 10,
-            BrokenPoint = 4
-        };
-        var leftWeaponParameter = new Weapon.WeaponParameter
-        {
-            Damage = 15,
-            BrokenPoint = 2
-        };
-        var robot1Parameter = new Robot.RobotParameter
-        {
-            Player = 1,
-            Hp = 100,
-            BodyBrokenPoint = 3,
-            RightWeapon = new Weapon(rightWeaponParameter),
-            LeftWeapon = new Weapon(leftWeaponParameter),
-        };
-        var robot2Parameter = new Robot.RobotParameter
-        {
-            Player = 2,
-            Hp = 100,
-            BodyBrokenPoint = 3,
-            RightWeapon = new Weapon(rightWeaponParameter),
-            LeftWeapon = new Weapon(leftWeaponParameter),
-        };
-        _player1Robot = new Robot(robot1Parameter);
-        _player2Robot = new Robot(robot2Parameter);
     }
 
     private void Update()
@@ -111,6 +69,7 @@ public class BattleManager : MonoBehaviour
         switch (_currentBattleState)
         {
             case BattleState.BattleStart:
+                InitBattle();
                 _currentBattleState = BattleState.TurnStart;
                 break;
             case BattleState.TurnStart:
@@ -127,11 +86,66 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    private void InitBattle()
+    { 
+        player1AttackRightArmButton.SetColor(ConstValue.ButtonBlue);
+        player1AttackLeftArmButton.SetColor(ConstValue.ButtonBlue);
+        player1RepairRightArmButton.SetColor(ConstValue.ButtonGray);
+        player1RepairLeftArmButton.SetColor(ConstValue.ButtonGray);
+        player1RepairBodyButton.SetColor(ConstValue.ButtonGray);
+
+        player2AttackRightArmButton.SetColor(ConstValue.ButtonBlue);
+        player2AttackLeftArmButton.SetColor(ConstValue.ButtonBlue);
+        player2RepairRightArmButton.SetColor(ConstValue.ButtonGray);
+        player2RepairLeftArmButton.SetColor(ConstValue.ButtonGray);
+        player2RepairBodyButton.SetColor(ConstValue.ButtonGray);
+
+        var rightWeaponParameter = new Weapon.WeaponParameter
+        {
+         Damage = 10,
+         BrokenPoint = 4
+        };
+        var leftWeaponParameter = new Weapon.WeaponParameter
+        {
+         Damage = 15,
+         BrokenPoint = 2
+        };
+        var robot1Parameter = new Robot.RobotParameter
+        {
+         Player = 1,
+         Hp = 100,
+         BodyBrokenPoint = 3,
+         RightWeapon = new Weapon(rightWeaponParameter),
+         LeftWeapon = new Weapon(leftWeaponParameter),
+        };
+        var robot2Parameter = new Robot.RobotParameter
+        {
+         Player = 2,
+         Hp = 100,
+         BodyBrokenPoint = 3,
+         RightWeapon = new Weapon(rightWeaponParameter),
+         LeftWeapon = new Weapon(leftWeaponParameter),
+        };
+        _player1Robot = new Robot(robot1Parameter);
+        _player2Robot = new Robot(robot2Parameter);
+        UpdateDamageValue();
+    }
+
+
     private void StartTurn()
     {
         var playerText = _currentPlayer == 1 ? player1Text : player2Text;
         playerText.text = string.Format(MessageBuilder.TurnStartMessage, _currentPlayer);
+        UpdateDamageValue();
         _currentBattleState = BattleState.CommandWaiting;
+    }
+
+    private void UpdateDamageValue()
+    {
+        player1AttackRightArmButton.SetDamageText(_player1Robot.CalculateDamage(BattleCommandType.AttackRightArm, _player2Robot).ToString());
+        player1AttackLeftArmButton.SetDamageText(_player1Robot.CalculateDamage(BattleCommandType.AttackLeftArm, _player2Robot).ToString());
+        player2AttackRightArmButton.SetDamageText(_player2Robot.CalculateDamage(BattleCommandType.AttackRightArm, _player1Robot).ToString());
+        player2AttackLeftArmButton.SetDamageText(_player2Robot.CalculateDamage(BattleCommandType.AttackLeftArm, _player1Robot).ToString());
     }
 
     private void OnClickButton(BattleCommandType battleCommandType, int player)
@@ -165,9 +179,9 @@ public class BattleManager : MonoBehaviour
             case BattleCommandType.RepairRightArm:
             case BattleCommandType.RepairLeftArm:
             case BattleCommandType.RepairBody:
-                attackerRobot.Repair(battleCommandType);
-                playerText.text = _messageBuilder.GetRepairMessage(battleCommandType);
-                ChangeRepairButtonColor(battleCommandType, player);
+                var repairResult = attackerRobot.Repair(battleCommandType);
+                playerText.text = _messageBuilder.GetRepairMessage(battleCommandType, repairResult);
+                ChangeRepairButtonColor(repairResult, battleCommandType, player);
                 break;
         }
     }
@@ -200,20 +214,45 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void ChangeRepairButtonColor(BattleCommandType battleCommandType, int player)
+    private void ChangeRepairButtonColor(Robot.ResultType repairResult, BattleCommandType battleCommandType, int player)
     {
-        switch (battleCommandType)
+        switch (repairResult)
         {
-            case BattleCommandType.RepairRightArm:
-                (player == 1 ? player1RepairRightArmButton : player2RepairRightArmButton).SetColor(ConstValue.ButtonGray);
-                (player == 1 ? player1AttackRightArmButton : player2AttackRightArmButton).SetColor(ConstValue.ButtonBlue);
+            case Robot.ResultType.Critical:
+                if (player == 1)
+                {
+                    player1RepairRightArmButton.SetColor(ConstValue.ButtonGray);
+                    player1RepairLeftArmButton.SetColor(ConstValue.ButtonGray);
+                    player1RepairBodyButton.SetColor(ConstValue.ButtonGray);
+                    player1AttackLeftArmButton.SetColor(ConstValue.ButtonBlue);
+                    player1AttackRightArmButton.SetColor(ConstValue.ButtonBlue);
+                }
+                else
+                {
+                    player2RepairRightArmButton.SetColor(ConstValue.ButtonGray);
+                    player2RepairLeftArmButton.SetColor(ConstValue.ButtonGray);
+                    player2RepairBodyButton.SetColor(ConstValue.ButtonGray);
+                    player2AttackLeftArmButton.SetColor(ConstValue.ButtonBlue);
+                    player2AttackRightArmButton.SetColor(ConstValue.ButtonBlue);
+                }
                 break;
-            case BattleCommandType.RepairLeftArm:
-                (player == 1 ? player1RepairLeftArmButton : player2RepairLeftArmButton).SetColor(ConstValue.ButtonGray);
-                (player == 1 ? player1AttackLeftArmButton : player2AttackLeftArmButton).SetColor(ConstValue.ButtonBlue);
+            case Robot.ResultType.Normal:
+                switch (battleCommandType)
+                {
+                    case BattleCommandType.RepairRightArm:
+                        (player == 1 ? player1RepairRightArmButton : player2RepairRightArmButton).SetColor(ConstValue.ButtonGray);
+                        (player == 1 ? player1AttackRightArmButton : player2AttackRightArmButton).SetColor(ConstValue.ButtonBlue);
+                        break;
+                    case BattleCommandType.RepairLeftArm:
+                        (player == 1 ? player1RepairLeftArmButton : player2RepairLeftArmButton).SetColor(ConstValue.ButtonGray);
+                        (player == 1 ? player1AttackLeftArmButton : player2AttackLeftArmButton).SetColor(ConstValue.ButtonBlue);
+                        break;
+                    case BattleCommandType.RepairBody:
+                        (player == 1 ? player1RepairBodyButton : player2RepairBodyButton).SetColor(ConstValue.ButtonGray);
+                        break;
+                }
                 break;
-            case BattleCommandType.RepairBody:
-                (player == 1 ? player1RepairBodyButton : player2RepairBodyButton).SetColor(ConstValue.ButtonGray);
+            case Robot.ResultType.Fumble:
                 break;
         }
     }

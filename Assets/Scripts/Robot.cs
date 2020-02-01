@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 public class Robot
 {
-    public enum Result
+    public enum ResultType
     {
         Critical,
         Normal,
@@ -14,7 +14,7 @@ public class Robot
     }
     public class AttackResult
     {
-        public Result Result;
+        public ResultType ResultType;
         public int Damage;
         public bool IsJustWeaponBroken;
         public bool IsJustBodyBroken;
@@ -47,9 +47,11 @@ public class Robot
     }
     public AttackResult Attack(BattleManager.BattleCommandType battleCommandType, Robot defenderRobot)
     {
+        var damage = CalculateDamage(battleCommandType, defenderRobot);
+        var attackResult = CalculateCriticalDamage(damage);
+        var isJustBodyBroken = defenderRobot.Damage(attackResult);
+        
         var weapon = battleCommandType == BattleManager.BattleCommandType.AttackRightArm ? _rightWeapon : _leftWeapon;
-        var damage = weapon.DamageValue;
-
         var isJustWeaponBroken = false;
         if (!weapon.IsBroken)
         {
@@ -64,20 +66,62 @@ public class Robot
             }
         }
 
-        damage = (int) (defenderRobot.IsBodyBroken ? damage * ConstValue.BrokenBodyDamageRate : damage);
-        var isJustBodyBroken = defenderRobot.Damage(damage);
-        return new AttackResult
-        {
-            Damage = damage,
-            Result = Result.Normal,
-            IsJustWeaponBroken = isJustWeaponBroken,
-            IsJustBodyBroken = isJustBodyBroken
-        };
+        attackResult.IsJustWeaponBroken = isJustWeaponBroken;
+        attackResult.IsJustBodyBroken = isJustBodyBroken;
+        return attackResult;
     }
 
-    private bool Damage(int damage)
+    private AttackResult CalculateCriticalDamage(int damage)
     {
-        Hp = Math.Max(0, Hp - damage);
+        var result = new AttackResult();
+
+        switch (DrawLotsCritical())
+        {
+            case ResultType.Critical:
+                result.ResultType = ResultType.Critical;
+                result.Damage = (int) (damage * ConstValue.CriticalDamageRate);
+                break;
+            case ResultType.Normal:
+                result.ResultType = ResultType.Normal;
+                result.Damage = damage;
+                break;
+            case ResultType.Fumble:
+                result.ResultType = ResultType.Fumble;
+                result.Damage = 0;
+                break;
+        }
+        return result;
+    }
+
+    private ResultType DrawLotsCritical()
+    {
+        var value = Random.Range(1, 101);
+        if (value <= ConstValue.AttackCriticalRate)
+        {
+            return ResultType.Critical;
+        }
+        else if (value <= ConstValue.AttackCriticalRate + ConstValue.AttackFumbleRate)
+        {
+            return ResultType.Fumble;
+        }
+
+        return ResultType.Normal;
+    }
+    public int CalculateDamage(BattleManager.BattleCommandType battleCommandType, Robot defenderRobot)
+    {
+        var weapon = battleCommandType == BattleManager.BattleCommandType.AttackRightArm ? _rightWeapon : _leftWeapon;
+        var damage = weapon.DamageValue;
+        damage = (int) (defenderRobot.IsBodyBroken ? damage * ConstValue.BrokenBodyDamageRate : damage);
+        return damage;
+    }
+    
+    private bool Damage(AttackResult attackResult)
+    {
+        if (attackResult.ResultType == ResultType.Fumble)
+        {
+            return false;
+        }
+        Hp = Math.Max(0, Hp - attackResult.Damage);
         if (IsBodyBroken)
         {
             return false;
@@ -97,20 +141,54 @@ public class Robot
         return Random.Range(1, point + 1) == 1;
     }
 
-    public void Repair(BattleManager.BattleCommandType battleCommandType)
+    public ResultType Repair(BattleManager.BattleCommandType battleCommandType)
     {
-        switch (battleCommandType)
+        switch (DrawLotsRepairCritical())
         {
-            case BattleManager.BattleCommandType.RepairRightArm:
+            case ResultType.Critical:
                 _rightWeapon.Repair();
-                break;
-            case BattleManager.BattleCommandType.RepairLeftArm:
                 _leftWeapon.Repair();
-                break;
-            case BattleManager.BattleCommandType.RepairBody:
-                IsBodyBroken = false;
-                _bodyBrokenPoint = _defaultBodyBrokenPoint;
-                break;
+                RepairBody();
+                return ResultType.Critical;
+            case ResultType.Normal:
+                switch (battleCommandType)
+                {
+                    case BattleManager.BattleCommandType.RepairRightArm:
+                        _rightWeapon.Repair();
+                        break;
+                    case BattleManager.BattleCommandType.RepairLeftArm:
+                        _leftWeapon.Repair();
+                        break;
+                    case BattleManager.BattleCommandType.RepairBody:
+                        RepairBody();
+                        break;
+                }
+                return ResultType.Normal;
+            case ResultType.Fumble:
+                return ResultType.Fumble;
         }
+        return ResultType.Normal;
+    }
+
+    private ResultType DrawLotsRepairCritical()
+    {
+        var value = Random.Range(1, 101);
+        if (value <= ConstValue.RepairCriticalRate)
+        {
+           return ResultType.Critical;
+        }
+        else if (value <= ConstValue.RepairCriticalRate + ConstValue.RepairFumbleRate)
+        {
+           return ResultType.Fumble;
+        }
+
+        return ResultType.Normal;
+    }
+
+    private void RepairBody()
+    {
+        IsBodyBroken = false;
+        _bodyBrokenPoint = _defaultBodyBrokenPoint;
     }
 }
+
