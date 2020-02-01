@@ -2009,6 +2009,10 @@ PrefabInstance:
       propertyPath: m_Text
       value: Continue
       objectReference: {fileID: 0}
+    - target: {fileID: 22200004, guid: 05a81c3d5091440058129444d28322f3, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 22400004, guid: 05a81c3d5091440058129444d28322f3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
