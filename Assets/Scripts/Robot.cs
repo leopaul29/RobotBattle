@@ -28,7 +28,7 @@ public class Robot
         public Weapon LeftWeapon;
     }
 
-    private int _hp;
+    public int Hp { get; set; }
     private int _bodyBrokenPoint;
     private int _defaultBodyBrokenPoint;
     private Weapon _rightWeapon;
@@ -37,7 +37,7 @@ public class Robot
 
     public Robot(RobotParameter robotParameter)
     {
-        _hp = robotParameter.Hp;
+        Hp = robotParameter.Hp;
         _bodyBrokenPoint = robotParameter.BodyBrokenPoint;
         _defaultBodyBrokenPoint = robotParameter.BodyBrokenPoint;
         _rightWeapon = robotParameter.RightWeapon;
@@ -70,7 +70,7 @@ public class Robot
 
     public bool Damage(int damage)
     {
-        _hp = Math.Max(0, _hp - damage);
+        Hp = Math.Max(0, Hp - damage);
         if (isBodyBroken)
         {
             return false;

@@ -22,6 +22,9 @@ public class BattleManager : MonoBehaviour
 
     [SerializeField] private Text player1Text;
     [SerializeField] private Text player2Text;
+    [SerializeField] private Text player1HP;
+    [SerializeField] private Text player2HP;
+
     
     private readonly MessageBuilder _messageBuilder = new MessageBuilder();
     private Robot _player1Robot;
@@ -142,6 +145,7 @@ public class BattleManager : MonoBehaviour
             case BattleCommandType.AttackLeftArm:
                 var attackResult = attackerRobot.Attack(battleCommandType, defenderRobot);
                 playerText.text = _messageBuilder.GetAttackMessage(_currentPlayer, battleCommandType, attackResult);
+                ChangeHp(attackResult, defenderRobot);
                 ChangeButtonColorAfterAttack(battleCommandType, attackResult, player);
                 break;
             case BattleCommandType.RepairRightArm:
@@ -152,6 +156,11 @@ public class BattleManager : MonoBehaviour
                 ChangeRepairButtonColor(battleCommandType, player);
                 break;
         }
+    }
+
+    private void ChangeHp(Robot.AttackResult attackResult, Robot defenderRobot)
+    {
+        (_currentPlayer == 1 ? player2HP : player1HP).text = $"HP:{defenderRobot.Hp.ToString()}";
     }
 
     private void ChangeButtonColorAfterAttack(BattleCommandType battleCommandType, Robot.AttackResult attackResult,
