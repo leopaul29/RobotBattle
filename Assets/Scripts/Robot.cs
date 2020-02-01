@@ -81,10 +81,6 @@ public class Robot
         {
             _bodyBrokenPoint--;
         }
-        else
-        {
-            _bodyBrokenPoint = _defaultBodyBrokenPoint;
-        }
 
         return isBodyBroken;
     }
@@ -92,5 +88,22 @@ public class Robot
     private bool DrawLots(int point)
     {
         return Random.Range(1, point + 1) == 1;
+    }
+
+    public void Repair(BattleManager.BattleCommandType battleCommandType)
+    {
+        switch (battleCommandType)
+        {
+            case BattleManager.BattleCommandType.RepairRightArm:
+                _rightWeapon.Repair();
+                break;
+            case BattleManager.BattleCommandType.RepairLeftArm:
+                _leftWeapon.Repair();
+                break;
+            case BattleManager.BattleCommandType.RepairBody:
+                isBodyBroken = false;
+                _bodyBrokenPoint = _defaultBodyBrokenPoint;
+                break;
+        }
     }
 }

@@ -18,7 +18,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Button player2AttackLeftArmButton;
     [SerializeField] private Button player2RepairRightArmButton;
     [SerializeField] private Button player2RepairLeftArmButton;
-    [SerializeField] private Button playerRepairBodyButton;
+    [SerializeField] private Button player2RepairBodyButton;
 
     [SerializeField] private Text player1Text;
     [SerializeField] private Text player2Text;
@@ -49,12 +49,17 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
-        player1AttackRightArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.AttackRightArm));
-        player1AttackLeftArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.AttackLeftArm));
-        player1RepairRightArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairRightArm));
-        player1RepairLeftArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairLeftArm));
-        player1RepairBodyButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairBody));
-
+        player1AttackRightArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.AttackRightArm, 1));
+        player1AttackLeftArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.AttackLeftArm, 1));
+        player1RepairRightArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairRightArm, 1));
+        player1RepairLeftArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairLeftArm, 1));
+        player1RepairBodyButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairBody, 1));
+        
+        player2AttackRightArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.AttackRightArm, 2));
+        player2AttackLeftArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.AttackLeftArm, 2));
+        player2RepairRightArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairRightArm, 2));
+        player2RepairLeftArmButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairLeftArm, 2));
+        player2RepairBodyButton.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairBody, 2));
         var weaponParameter = new Weapon.WeaponParameter
         {
             Damage = 10,
@@ -99,9 +104,14 @@ public class BattleManager : MonoBehaviour
         _currentBattleState = BattleState.CommandWaiting;
     }
 
-    private void OnClickButton(BattleCommandType battleCommandType)
+    private void OnClickButton(BattleCommandType battleCommandType, int player)
     {
         if (_currentBattleState != BattleState.CommandWaiting)
+        {
+            return;
+        }
+        
+        if((_currentPlayer == 1 && player == 2) || (_currentPlayer == 2 && player == 1 ))
         {
             return;
         }
@@ -122,6 +132,8 @@ public class BattleManager : MonoBehaviour
             case BattleCommandType.RepairRightArm:
             case BattleCommandType.RepairLeftArm:
             case BattleCommandType.RepairBody:
+                attackerRobot.Repair(battleCommandType);
+                playerText.text = _messageBuilder.GetRepairMessage(battleCommandType);
                 break;
         }
     }

@@ -12,6 +12,9 @@ public class MessageBuilder
     private const string AttackNoDamageMessage = "ダメージを与えられなかった！";
     private const string AttackWeaponBrokenMessage = "自分の武器が壊れた！";
     private const string AttackBodyBrokenMessage = "相手のボディが壊れた！";
+    private const string RepairRightWeaponMessage = "自分の右の武器を修復した！";
+    private const string RepairLeftWeaponMessage = "自分の左の武器を修復した！";
+    private const string RepairBodyMessage = "自分のボディを修復した！";
     
 //    public const string TurnStartMessage = "プレイヤー{0}のターン！";
 //    public const string TurnStartMessage = "プレイヤー{0}のターン！";
@@ -34,6 +37,24 @@ public class MessageBuilder
                 break;
         }
 
+        return result;
+    }
+
+    public string GetRepairMessage(BattleManager.BattleCommandType battleCommandType)
+    {
+        var result = string.Empty;
+        switch (battleCommandType)
+        { 
+            case BattleManager.BattleCommandType.RepairRightArm:
+                result = RepairRightWeaponMessage;
+                break;
+            case BattleManager.BattleCommandType.RepairLeftArm:
+                result = RepairLeftWeaponMessage;
+                break;
+            case BattleManager.BattleCommandType.RepairBody:
+                result = RepairBodyMessage;
+                break;
+        }
         return result;
     }
 }

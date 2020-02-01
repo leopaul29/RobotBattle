@@ -25,6 +25,11 @@ public class Weapon
     public void Break()
     {
         IsBroken = true;
+    }
+
+    public void Repair()
+    {
+        IsBroken = false;
         BrokenPoint = _defaultBrokenPoint;
     }
 }
