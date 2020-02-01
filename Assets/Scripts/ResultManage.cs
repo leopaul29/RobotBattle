@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class titlemanage : MonoBehaviour
+public class ResultManage : MonoBehaviour
 {
-
     public void OnStartButtonClicked()
     {
-        SceneManager.LoadScene("Result");
+        SceneManager.LoadScene("Menu 3D");
     }
-
 }

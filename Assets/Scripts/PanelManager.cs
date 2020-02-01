@@ -28,7 +28,7 @@ public class PanelManager : MonoBehaviour {
     {
         //結果の反映
 		resultFlag1 = true;
-		resultFlag2 = true;
+		resultFlag2 = false;
         if(resultFlag1 == true && resultFlag2 == false)
         {
 			player1resultText.text = "WIN!!";
