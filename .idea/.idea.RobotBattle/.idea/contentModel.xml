@@ -292,6 +292,20 @@
           <e p="SoundManager.cs" t="Include" />
           <e p="Weapon.cs" t="Include" />
         </e>
+        <e p="Unity Samples UI" t="Include">
+          <e p="Fonts" t="Include">
+            <e p="Jupiter" t="Include">
+              <e p="LICENSE.txt" t="Include" />
+            </e>
+          </e>
+          <e p="Textures and Sprites" t="Include">
+            <e p="SF UI" t="Include">
+              <e p="Background" t="Include">
+                <e p="LICENSE.txt" t="Include" />
+              </e>
+            </e>
+          </e>
+        </e>
       </e>
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
