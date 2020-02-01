@@ -4,5 +4,5 @@ using UnityEngine;
 
 public static class ConstValue
 {
-    public const string TurnStartMessage = "プレイヤー{0}のターン！";
+
 }
