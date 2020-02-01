@@ -305,8 +305,8 @@ MonoBehaviour:
   player2RepairBodyButton: {fileID: 1093554225}
   player1Text: {fileID: 1759277724}
   player2Text: {fileID: 1759277723}
-  player1HP: {fileID: 1759277726}
-  player2HP: {fileID: 1759277725}
+  player1Hp: {fileID: 1759277726}
+  player2Hp: {fileID: 1759277725}
 --- !u!4 &986519178
 Transform:
   m_ObjectHideFlags: 0

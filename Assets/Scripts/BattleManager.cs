@@ -22,8 +22,8 @@ public class BattleManager : MonoBehaviour
 
     [SerializeField] private Text player1Text;
     [SerializeField] private Text player2Text;
-    [SerializeField] private Text player1HP;
-    [SerializeField] private Text player2HP;
+    [SerializeField] private Text player1Hp;
+    [FormerlySerializedAs("player2HP")] [SerializeField] private Text player2Hp;
 
     
     private readonly MessageBuilder _messageBuilder = new MessageBuilder();
@@ -76,20 +76,34 @@ public class BattleManager : MonoBehaviour
         player2RepairLeftArmButton.SetColor(ConstValue.ButtonGray);
         player2RepairBodyButton.SetColor(ConstValue.ButtonGray);
         
-        var weaponParameter = new Weapon.WeaponParameter
+        var rightWeaponParameter = new Weapon.WeaponParameter
         {
             Damage = 10,
+            BrokenPoint = 4
+        };
+        var leftWeaponParameter = new Weapon.WeaponParameter
+        {
+            Damage = 15,
             BrokenPoint = 2
         };
-        var robotParameter = new Robot.RobotParameter
+        var robot1Parameter = new Robot.RobotParameter
         {
+            Player = 1,
             Hp = 100,
             BodyBrokenPoint = 3,
-            RightWeapon = new Weapon(weaponParameter),
-            LeftWeapon = new Weapon(weaponParameter),
+            RightWeapon = new Weapon(rightWeaponParameter),
+            LeftWeapon = new Weapon(leftWeaponParameter),
         };
-        _player1Robot = new Robot(robotParameter);
-        _player2Robot = new Robot(robotParameter);
+        var robot2Parameter = new Robot.RobotParameter
+        {
+            Player = 2,
+            Hp = 100,
+            BodyBrokenPoint = 3,
+            RightWeapon = new Weapon(rightWeaponParameter),
+            LeftWeapon = new Weapon(leftWeaponParameter),
+        };
+        _player1Robot = new Robot(robot1Parameter);
+        _player2Robot = new Robot(robot2Parameter);
     }
 
     private void Update()
@@ -160,7 +174,7 @@ public class BattleManager : MonoBehaviour
 
     private void ChangeHp(Robot.AttackResult attackResult, Robot defenderRobot)
     {
-        (_currentPlayer == 1 ? player2HP : player1HP).text = $"HP:{defenderRobot.Hp.ToString()}";
+        (_currentPlayer == 1 ? player2Hp : player1Hp).text = $"HP:{defenderRobot.Hp.ToString()}";
     }
 
     private void ChangeButtonColorAfterAttack(BattleCommandType battleCommandType, Robot.AttackResult attackResult,

@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class Weapon
 {
-    public int Damage { get; private set; }
+    private readonly int _damage;
     public int BrokenPoint;
-    private int _defaultBrokenPoint;
+    private readonly int _defaultBrokenPoint;
     public bool IsBroken { get; private set; }
+
+    public int DamageValue => IsBroken ? (int)(_damage * ConstValue.BrokenWeaponDamageRate) : _damage;
 
     public class WeaponParameter
     {
@@ -18,10 +20,9 @@ public class Weapon
 
     public  Weapon(WeaponParameter weaponParameter)
     {
-        Damage = weaponParameter.Damage;
+        _damage = weaponParameter.Damage;
         _defaultBrokenPoint = BrokenPoint = weaponParameter.BrokenPoint;
     }
-
     public void Break()
     {
         IsBroken = true;

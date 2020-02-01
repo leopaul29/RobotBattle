@@ -22,6 +22,7 @@ public class Robot
     
     public class RobotParameter
     {
+        public int Player;
         public int Hp;
         public int BodyBrokenPoint;
         public Weapon RightWeapon;
@@ -29,11 +30,12 @@ public class Robot
     }
 
     public int Hp { get; set; }
+    private int _player;
     private int _bodyBrokenPoint;
     private int _defaultBodyBrokenPoint;
     private Weapon _rightWeapon;
     private Weapon _leftWeapon;
-    public bool isBodyBroken { get; private set; }
+    public bool IsBodyBroken { get; private set; }
 
     public Robot(RobotParameter robotParameter)
     {
@@ -46,7 +48,7 @@ public class Robot
     public AttackResult Attack(BattleManager.BattleCommandType battleCommandType, Robot defenderRobot)
     {
         var weapon = battleCommandType == BattleManager.BattleCommandType.AttackRightArm ? _rightWeapon : _leftWeapon;
-        var damage = weapon.Damage;
+        var damage = weapon.DamageValue;
 
         var isJustWeaponBroken = false;
         if (!weapon.IsBroken)
@@ -56,8 +58,13 @@ public class Robot
             {
                 weapon.Break();
             }
+            else
+            {
+                weapon.BrokenPoint--;
+            }
         }
 
+        damage = (int) (defenderRobot.IsBodyBroken ? damage * ConstValue.BrokenBodyDamageRate : damage);
         var isJustBodyBroken = defenderRobot.Damage(damage);
         return new AttackResult
         {
@@ -68,21 +75,21 @@ public class Robot
         };
     }
 
-    public bool Damage(int damage)
+    private bool Damage(int damage)
     {
         Hp = Math.Max(0, Hp - damage);
-        if (isBodyBroken)
+        if (IsBodyBroken)
         {
             return false;
         }
         
-        isBodyBroken = DrawLots(_bodyBrokenPoint);
-        if (!isBodyBroken)
+        IsBodyBroken = DrawLots(_bodyBrokenPoint);
+        if (!IsBodyBroken)
         {
             _bodyBrokenPoint--;
         }
 
-        return isBodyBroken;
+        return IsBodyBroken;
     }
 
     private bool DrawLots(int point)
@@ -101,7 +108,7 @@ public class Robot
                 _leftWeapon.Repair();
                 break;
             case BattleManager.BattleCommandType.RepairBody:
-                isBodyBroken = false;
+                IsBodyBroken = false;
                 _bodyBrokenPoint = _defaultBodyBrokenPoint;
                 break;
         }
