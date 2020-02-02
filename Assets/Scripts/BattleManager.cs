@@ -143,6 +143,41 @@ public class BattleManager : MonoBehaviour
 
         player2Energy.text = $"Energy:{(int)_player2Robot.Energy}";
         player2EnergyBar.value = _player2Robot.Energy / MAX_ENERGY;
+//        
+//        if (Input.anyKeyDown) {
+//            foreach (KeyCode code in Enum.GetValues(typeof(KeyCode))) {
+//                if (Input.GetKeyDown (code)) {
+//                    Debug.Log ($"KeyPress! {code}");
+//                    break;
+//                }
+//            }
+//        }
+        
+
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.Joystick1Button2))
+        {
+            OnClickButton(BattleCommandType.AttackLeftArm, 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.Joystick1Button0))
+        {
+            OnClickButton(BattleCommandType.RepairBody, 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.Joystick1Button1))
+        {
+            OnClickButton(BattleCommandType.AttackRightArm, 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.J))
+        {
+            OnClickButton(BattleCommandType.AttackLeftArm, 2);
+        }
+        else if (Input.GetKeyDown(KeyCode.K))
+        {
+            OnClickButton(BattleCommandType.RepairBody, 2);
+        }
+        else if (Input.GetKeyDown(KeyCode.L))
+        {
+            OnClickButton(BattleCommandType.AttackRightArm, 2);
+        }
     }
 
     private void OnClickButton(BattleCommandType battleCommandType, int player)
