@@ -25,21 +25,12 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Text player2Text;
     [SerializeField] private Text player1Hp;
     [FormerlySerializedAs("player2HP")] [SerializeField] private Text player2Hp;
+    [SerializeField] private Text player1Energy;
+    [SerializeField] private Text player2Energy;
     
     private readonly MessageBuilder _messageBuilder = new MessageBuilder();
     private Robot _player1Robot;
     private Robot _player2Robot;
-    private int _currentPlayer = 1;
-    private BattleState _currentBattleState = BattleState.BattleStart;
-
-    private enum BattleState
-    {
-        BattleStart,
-        TurnStart,
-        CommandWaiting,
-        CommandResult,
-        BattleEnd,
-    }
 
     public enum BattleCommandType
     {
@@ -63,34 +54,8 @@ public class BattleManager : MonoBehaviour
         player2RepairRightArmButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairRightArm, 2));
         player2RepairLeftArmButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairLeftArm, 2));
         player2RepairBodyButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairBody, 2));
-    }
-
-    private void Update()
-    {
-        switch (_currentBattleState)
-        {
-            case BattleState.BattleStart:
-                InitBattle();
-                _currentBattleState = BattleState.TurnStart;
-                break;
-            case BattleState.TurnStart:
-                StartTurn();
-                break;
-            case BattleState.CommandWaiting:
-                break;
-            case BattleState.CommandResult:
-                if (_player1Robot.IsDead || _player2Robot.IsDead)
-                {
-                    _currentBattleState = BattleState.BattleEnd;
-                    break;
-                }
-                _currentPlayer = _currentPlayer == 1 ? 2 : 1; 
-                _currentBattleState = BattleState.TurnStart;
-                break;
-            case BattleState.BattleEnd:
-                SceneManager.LoadScene("Result");
-                break;
-        }
+        
+        InitBattle();
     }
 
     private void InitBattle()
@@ -110,12 +75,16 @@ public class BattleManager : MonoBehaviour
         var rightWeaponParameter = new Weapon.WeaponParameter
         {
          Damage = 10,
-         BrokenPoint = 4
+         BrokenPoint = 4,
+         EnergyToAttack = 10,
+         EnergyToRepair = 10,
         };
         var leftWeaponParameter = new Weapon.WeaponParameter
         {
          Damage = 15,
-         BrokenPoint = 2
+         BrokenPoint = 2,
+         EnergyToAttack = 40,
+         EnergyToRepair = 40
         };
         var robot1Parameter = new Robot.RobotParameter
         {
@@ -124,6 +93,7 @@ public class BattleManager : MonoBehaviour
          BodyBrokenPoint = 3,
          RightWeapon = new Weapon(rightWeaponParameter),
          LeftWeapon = new Weapon(leftWeaponParameter),
+         EnergyToRepairBody = 30,
         };
         var robot2Parameter = new Robot.RobotParameter
         {
@@ -132,19 +102,17 @@ public class BattleManager : MonoBehaviour
          BodyBrokenPoint = 3,
          RightWeapon = new Weapon(rightWeaponParameter),
          LeftWeapon = new Weapon(leftWeaponParameter),
+         EnergyToRepairBody = 30
         };
         _player1Robot = new Robot(robot1Parameter);
         _player2Robot = new Robot(robot2Parameter);
-        UpdateDamageValue();
-    }
-
-
-    private void StartTurn()
-    {
-        var playerText = _currentPlayer == 1 ? player1Text : player2Text;
-        playerText.text = string.Format(MessageBuilder.TurnStartMessage, _currentPlayer);
-        UpdateDamageValue();
-        _currentBattleState = BattleState.CommandWaiting;
+        //UpdateDamageValue();
+        player1AttackRightArmButton.SetDamageText(robot1Parameter.RightWeapon.EnergyToAttack.ToString());
+        player1AttackLeftArmButton.SetDamageText(robot1Parameter.LeftWeapon.EnergyToAttack.ToString());
+        player1RepairBodyButton.SetDamageText(robot1Parameter.EnergyToRepairBody.ToString());
+        player2AttackRightArmButton.SetDamageText(robot2Parameter.RightWeapon.EnergyToAttack.ToString());
+        player2AttackLeftArmButton.SetDamageText(robot2Parameter.LeftWeapon.EnergyToAttack.ToString());
+        player2RepairBodyButton.SetDamageText(robot2Parameter.EnergyToRepairBody.ToString());
     }
 
     private void UpdateDamageValue()
@@ -155,32 +123,30 @@ public class BattleManager : MonoBehaviour
         player2AttackLeftArmButton.SetDamageText(_player2Robot.CalculateDamage(BattleCommandType.AttackLeftArm, _player1Robot).ToString());
     }
 
+    private void Update()
+    {
+        player1Energy.text = $"Energy:{(int)_player1Robot.Energy}";
+        player2Energy.text = $"Energy:{(int)_player2Robot.Energy}";
+    }
+
     private void OnClickButton(BattleCommandType battleCommandType, int player)
     {
-        if (_currentBattleState != BattleState.CommandWaiting)
-        {
-            return;
-        }
-        
-        if((_currentPlayer == 1 && player == 2) || (_currentPlayer == 2 && player == 1 ))
-        {
-            return;
-        }
-        
-        _currentBattleState = BattleState.CommandResult;
-        
-        var attackerRobot = _currentPlayer == 1 ? _player1Robot : _player2Robot;
-        var defenderRobot = _currentPlayer == 1 ? _player2Robot : _player1Robot;
+        var attackerRobot = player == 1 ? _player1Robot : _player2Robot;
+        var defenderRobot = player == 1 ? _player2Robot : _player1Robot;
 
-        var playerText = _currentPlayer == 1 ? player1Text : player2Text;
-        BattleCommandButton battleCommandButton;
+        if (!attackerRobot.CanExecuteCommand(battleCommandType))
+        {
+            return;
+        }
+        var playerText = player == 1 ? player1Text : player2Text;
         switch (battleCommandType)
         {
             case BattleCommandType.AttackRightArm:
             case BattleCommandType.AttackLeftArm:
+               
                 var attackResult = attackerRobot.Attack(battleCommandType, defenderRobot);
-                playerText.text = _messageBuilder.GetAttackMessage(_currentPlayer, battleCommandType, attackResult);
-                ChangeHp(attackResult, defenderRobot);
+                playerText.text = _messageBuilder.GetAttackMessage(player, battleCommandType, attackResult);
+                ChangeHp(player, defenderRobot);
                 ChangeButtonColorAfterAttack(battleCommandType, attackResult, player);
                 break;
             case BattleCommandType.RepairRightArm:
@@ -191,11 +157,16 @@ public class BattleManager : MonoBehaviour
                 ChangeRepairButtonColor(repairResult, battleCommandType, player);
                 break;
         }
+        if (defenderRobot.IsDead)
+        {
+            SceneManager.LoadScene("Result");
+        }
+        //UpdateDamageValue();
     }
 
-    private void ChangeHp(Robot.AttackResult attackResult, Robot defenderRobot)
+    private void ChangeHp(int player, Robot defenderRobot)
     {
-        (_currentPlayer == 1 ? player2Hp : player1Hp).text = $"HP:{defenderRobot.Hp.ToString()}";
+        (player == 1 ? player2Hp : player1Hp).text = $"HP:{defenderRobot.Hp.ToString()}";
     }
 
     private void ChangeButtonColorAfterAttack(BattleCommandType battleCommandType, Robot.AttackResult attackResult,
