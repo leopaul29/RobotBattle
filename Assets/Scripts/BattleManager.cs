@@ -28,6 +28,14 @@ public class BattleManager : MonoBehaviour
     [FormerlySerializedAs("player2HP")] [SerializeField] private Text player2Hp;
     [SerializeField] private Text player1Energy;
     [SerializeField] private Text player2Energy;
+
+    [SerializeField] private Slider player1HealthBar;
+    [SerializeField] private Slider player2HealthBar;
+    [SerializeField] private Slider player1EnergyBar;
+    [SerializeField] private Slider player2EnergyBar;
+
+    private const int MAX_HEALTH = 100;
+    private const int MAX_ENERGY = 100;
     
     private readonly MessageBuilder _messageBuilder = new MessageBuilder();
     private Robot _player1Robot;
@@ -114,6 +122,10 @@ public class BattleManager : MonoBehaviour
         player2AttackRightArmButton.SetDamageText(robot2Parameter.RightWeapon.EnergyToAttack.ToString());
         player2AttackLeftArmButton.SetDamageText(robot2Parameter.LeftWeapon.EnergyToAttack.ToString());
         player2RepairBodyButton.SetDamageText(robot2Parameter.EnergyToRepairBody.ToString());
+
+        // healthbar
+        player1HealthBar.value = (float)robot1Parameter.Hp / MAX_HEALTH;
+        player2HealthBar.value = (float)robot2Parameter.Hp / MAX_HEALTH;
     }
 
     private void UpdateDamageValue()
@@ -126,8 +138,63 @@ public class BattleManager : MonoBehaviour
 
     private void Update()
     {
+        // energy text and bar UI update
         player1Energy.text = $"Energy:{(int)_player1Robot.Energy}";
+        player1EnergyBar.value = _player1Robot.Energy / MAX_ENERGY;
+
         player2Energy.text = $"Energy:{(int)_player2Robot.Energy}";
+        player2EnergyBar.value = _player2Robot.Energy / MAX_ENERGY;
+//        
+//        if (Input.anyKeyDown) {
+//            foreach (KeyCode code in Enum.GetValues(typeof(KeyCode))) {
+//                if (Input.GetKeyDown (code)) {
+//                    Debug.Log ($"KeyPress! {code}");
+//                    break;
+//                }
+//            }
+//        }
+
+        
+                player1AttackRightArmButton.ButtonObject.enabled = _player1Robot.CanExecuteCommand(BattleCommandType.AttackRightArm);
+                player1AttackRightArmButton.SetColor(_player1Robot.CanExecuteCommand(BattleCommandType.AttackRightArm) ? ConstValue.ButtonBlue : ConstValue.ButtonGray);
+                player1AttackLeftArmButton.ButtonObject.enabled = _player1Robot.CanExecuteCommand(BattleCommandType.AttackLeftArm);
+                player1AttackLeftArmButton.SetColor(_player1Robot.CanExecuteCommand(BattleCommandType.AttackLeftArm) ? ConstValue.ButtonBlue : ConstValue.ButtonGray);
+                player1RepairBodyButton.ButtonObject.enabled = _player1Robot.CanExecuteCommand(BattleCommandType.RepairBody) && _player1Robot.IsBodyBroken;
+                player1RepairBodyButton.SetColor(!_player1Robot.IsBodyBroken ? ConstValue.ButtonGray : (_player1Robot.CanExecuteCommand(BattleCommandType.RepairBody) ? ConstValue.ButtonGreen : ConstValue.ButtonRed));
+
+                player2AttackRightArmButton.ButtonObject.enabled = _player2Robot.CanExecuteCommand(BattleCommandType.AttackRightArm);
+                player2AttackRightArmButton.SetColor(_player2Robot.CanExecuteCommand(BattleCommandType.AttackRightArm) ? ConstValue.ButtonBlue : ConstValue.ButtonGray);
+                player2AttackLeftArmButton.ButtonObject.enabled = _player2Robot.CanExecuteCommand(BattleCommandType.AttackLeftArm);
+                player2AttackLeftArmButton.SetColor(_player2Robot.CanExecuteCommand(BattleCommandType.AttackLeftArm) ? ConstValue.ButtonBlue : ConstValue.ButtonGray);
+                player2RepairBodyButton.ButtonObject.enabled = _player2Robot.CanExecuteCommand(BattleCommandType.RepairBody) && _player2Robot.IsBodyBroken;
+                player2RepairBodyButton.SetColor(!_player2Robot.IsBodyBroken ? ConstValue.ButtonGray : (_player2Robot.CanExecuteCommand(BattleCommandType.RepairBody) ? ConstValue.ButtonGreen : ConstValue.ButtonRed));
+
+            
+
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.Joystick1Button2))
+        {
+            OnClickButton(BattleCommandType.AttackLeftArm, 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.Joystick1Button0))
+        {
+            OnClickButton(BattleCommandType.RepairBody, 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.Joystick1Button1))
+        {
+            OnClickButton(BattleCommandType.AttackRightArm, 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.J))
+        {
+            OnClickButton(BattleCommandType.AttackLeftArm, 2);
+        }
+        else if (Input.GetKeyDown(KeyCode.K))
+        {
+            OnClickButton(BattleCommandType.RepairBody, 2);
+        }
+        else if (Input.GetKeyDown(KeyCode.L))
+        {
+            OnClickButton(BattleCommandType.AttackRightArm, 2);
+        }
     }
 
     private void OnClickButton(BattleCommandType battleCommandType, int player)
@@ -169,6 +236,7 @@ public class BattleManager : MonoBehaviour
     private void ChangeHp(int player, Robot defenderRobot)
     {
         (player == 1 ? player2Hp : player1Hp).text = $"HP:{defenderRobot.Hp.ToString()}";
+        (player == 1 ? player2HealthBar : player1HealthBar).value = (float)defenderRobot.Hp / MAX_HEALTH;
     }
 
     private void ChangeButtonColorAfterAttack(BattleCommandType battleCommandType, Robot.AttackResult attackResult,
