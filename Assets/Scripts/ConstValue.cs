@@ -14,8 +14,8 @@ public static class ConstValue
 
     public static readonly int AttackCriticalRate = 10;
     public static readonly int AttackFumbleRate = 7;
-    public static readonly int RepairCriticalRate = 10;
-    public static readonly int RepairFumbleRate = 10;
+    public static readonly int RepairCriticalRate = 0;
+    public static readonly int RepairFumbleRate = 0;
     
     public static readonly float CriticalDamageRate = 2.0f;
 

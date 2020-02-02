@@ -75,12 +75,16 @@ public class BattleManager : MonoBehaviour
         var rightWeaponParameter = new Weapon.WeaponParameter
         {
          Damage = 10,
-         BrokenPoint = 4
+         BrokenPoint = 4,
+         EnergyToAttack = 10,
+         EnergyToRepair = 10,
         };
         var leftWeaponParameter = new Weapon.WeaponParameter
         {
          Damage = 15,
-         BrokenPoint = 2
+         BrokenPoint = 2,
+         EnergyToAttack = 40,
+         EnergyToRepair = 40
         };
         var robot1Parameter = new Robot.RobotParameter
         {
@@ -89,6 +93,7 @@ public class BattleManager : MonoBehaviour
          BodyBrokenPoint = 3,
          RightWeapon = new Weapon(rightWeaponParameter),
          LeftWeapon = new Weapon(leftWeaponParameter),
+         EnegyToRepairBody = 30,
         };
         var robot2Parameter = new Robot.RobotParameter
         {
@@ -97,6 +102,7 @@ public class BattleManager : MonoBehaviour
          BodyBrokenPoint = 3,
          RightWeapon = new Weapon(rightWeaponParameter),
          LeftWeapon = new Weapon(leftWeaponParameter),
+         EnegyToRepairBody = 30
         };
         _player1Robot = new Robot(robot1Parameter);
         _player2Robot = new Robot(robot2Parameter);
@@ -122,12 +128,16 @@ public class BattleManager : MonoBehaviour
         var attackerRobot = player == 1 ? _player1Robot : _player2Robot;
         var defenderRobot = player == 1 ? _player2Robot : _player1Robot;
 
+        if (!attackerRobot.CanExecuteCommand(battleCommandType))
+        {
+            return;
+        }
         var playerText = player == 1 ? player1Text : player2Text;
-        BattleCommandButton battleCommandButton;
         switch (battleCommandType)
         {
             case BattleCommandType.AttackRightArm:
             case BattleCommandType.AttackLeftArm:
+               
                 var attackResult = attackerRobot.Attack(battleCommandType, defenderRobot);
                 playerText.text = _messageBuilder.GetAttackMessage(player, battleCommandType, attackResult);
                 ChangeHp(player, defenderRobot);
