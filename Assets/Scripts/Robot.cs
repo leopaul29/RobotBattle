@@ -67,18 +67,18 @@ public class Robot
         Energy = Math.Max(0, Energy - weapon.EnergyToAttack);
         
         var isJustWeaponBroken = false;
-        if (!weapon.IsBroken)
-        {
-            isJustWeaponBroken = DrawLots(weapon.BrokenPoint);
-            if (isJustWeaponBroken)
-            {
-                weapon.Break();
-            }
-            else
-            {
-                weapon.BrokenPoint--;
-            }
-        }
+//        if (!weapon.IsBroken)
+//        {
+//            isJustWeaponBroken = DrawLots(weapon.BrokenPoint);
+//            if (isJustWeaponBroken)
+//            {
+//                weapon.Break();
+//            }
+//            else
+//            {
+//                weapon.BrokenPoint--;
+//            }
+//        }
 
         attackResult.IsJustWeaponBroken = isJustWeaponBroken;
         attackResult.IsJustBodyBroken = isJustBodyBroken;
