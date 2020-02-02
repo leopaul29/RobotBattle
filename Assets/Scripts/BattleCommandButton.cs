@@ -21,13 +21,39 @@ public class BattleCommandButton : MonoBehaviour
         }
     }
 
-    private Image ImageObject;
-    private Text DamageText;
-    void Start()
+    private Image _imageObject;
+    private Image ImageObject
     {
-        ImageObject = GetComponent<Image>();
-        DamageText = GetComponentsInChildren<Text>().ToList().FirstOrDefault(x => x.name == "DamageText");
+        get
+        {
+            if (_imageObject == null)
+            {
+                _imageObject = GetComponent<Image>();
+            }
+
+            return _imageObject;
+        }
     }
+
+    private Text _damageText;
+
+    private Text DamageText
+    {
+        get
+        {
+            if (_damageText == null)
+            {
+                _damageText = GetComponentsInChildren<Text>().ToList().FirstOrDefault(x => x.name == "DamageText");
+            }
+
+            return _damageText;
+        }
+    }
+//    void Start()
+//    {
+//        ImageObject = GetComponent<Image>();
+//        DamageText = GetComponentsInChildren<Text>().ToList().FirstOrDefault(x => x.name == "DamageText");
+//    }
 
     public void SetColor(Color color)
     {

@@ -28,12 +28,13 @@ public class BattleManager : MonoBehaviour
     private readonly MessageBuilder _messageBuilder = new MessageBuilder();
     private Robot _player1Robot;
     private Robot _player2Robot;
-    private int _currentPlayer = 1;
-    private BattleState _currentBattleState = BattleState.BattleStart;
+//    private int _currentPlayer = 1;
+//    private BattleState _currentBattleState = BattleState.BattleStart;
 
     private enum BattleState
     {
         BattleStart,
+        DuringBattle,
         TurnStart,
         CommandWaiting,
         CommandResult,
@@ -62,28 +63,30 @@ public class BattleManager : MonoBehaviour
         player2RepairRightArmButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairRightArm, 2));
         player2RepairLeftArmButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairLeftArm, 2));
         player2RepairBodyButton.ButtonObject.OnClickAsObservable().Subscribe(x => OnClickButton(BattleCommandType.RepairBody, 2));
+        
+        InitBattle();
     }
 
     private void Update()
     {
-        switch (_currentBattleState)
-        {
-            case BattleState.BattleStart:
-                InitBattle();
-                _currentBattleState = BattleState.TurnStart;
-                break;
-            case BattleState.TurnStart:
-                StartTurn();
-                break;
-            case BattleState.CommandWaiting:
-                break;
-            case BattleState.CommandResult:
-                _currentPlayer = _currentPlayer == 1 ? 2 : 1; 
-                _currentBattleState = BattleState.TurnStart;
-                break;
-            case BattleState.BattleEnd:
-                break;
-        }
+//        switch (_currentBattleState)
+//        {
+//            case BattleState.BattleStart:
+//                InitBattle();
+//                _currentBattleState = BattleState.DuringBattle;
+//                break;
+//            case BattleState.TurnStart:
+//                StartTurn();
+//                break;
+//            case BattleState.CommandWaiting:
+//                break;
+//            case BattleState.CommandResult:
+////                _currentPlayer = _currentPlayer == 1 ? 2 : 1; 
+//                _currentBattleState = BattleState.TurnStart;
+//                break;
+//            case BattleState.BattleEnd:
+//                break;
+//        }
     }
 
     private void InitBattle()
@@ -132,13 +135,13 @@ public class BattleManager : MonoBehaviour
     }
 
 
-    private void StartTurn()
-    {
-        var playerText = _currentPlayer == 1 ? player1Text : player2Text;
-        playerText.text = string.Format(MessageBuilder.TurnStartMessage, _currentPlayer);
-        UpdateDamageValue();
-        _currentBattleState = BattleState.CommandWaiting;
-    }
+//    private void StartTurn()
+//    {
+//        var playerText = _currentPlayer == 1 ? player1Text : player2Text;
+//        playerText.text = string.Format(MessageBuilder.TurnStartMessage, _currentPlayer);
+//        UpdateDamageValue();
+//        _currentBattleState = BattleState.CommandWaiting;
+//    }
 
     private void UpdateDamageValue()
     {
@@ -150,30 +153,30 @@ public class BattleManager : MonoBehaviour
 
     private void OnClickButton(BattleCommandType battleCommandType, int player)
     {
-        if (_currentBattleState != BattleState.CommandWaiting)
-        {
-            return;
-        }
+//        if (_currentBattleState != BattleState.CommandWaiting)
+//        {
+//            return;
+//        }
+//        
+//        if((_currentPlayer == 1 && player == 2) || (_currentPlayer == 2 && player == 1 ))
+//        {
+//            return;
+//        }
+//        
+//        _currentBattleState = BattleState.CommandResult;
         
-        if((_currentPlayer == 1 && player == 2) || (_currentPlayer == 2 && player == 1 ))
-        {
-            return;
-        }
-        
-        _currentBattleState = BattleState.CommandResult;
-        
-        var attackerRobot = _currentPlayer == 1 ? _player1Robot : _player2Robot;
-        var defenderRobot = _currentPlayer == 1 ? _player2Robot : _player1Robot;
+        var attackerRobot = player == 1 ? _player1Robot : _player2Robot;
+        var defenderRobot = player == 1 ? _player2Robot : _player1Robot;
 
-        var playerText = _currentPlayer == 1 ? player1Text : player2Text;
+        var playerText = player == 1 ? player1Text : player2Text;
         BattleCommandButton battleCommandButton;
         switch (battleCommandType)
         {
             case BattleCommandType.AttackRightArm:
             case BattleCommandType.AttackLeftArm:
                 var attackResult = attackerRobot.Attack(battleCommandType, defenderRobot);
-                playerText.text = _messageBuilder.GetAttackMessage(_currentPlayer, battleCommandType, attackResult);
-                ChangeHp(attackResult, defenderRobot);
+                playerText.text = _messageBuilder.GetAttackMessage(player, battleCommandType, attackResult);
+                ChangeHp(player, defenderRobot);
                 ChangeButtonColorAfterAttack(battleCommandType, attackResult, player);
                 break;
             case BattleCommandType.RepairRightArm:
@@ -184,11 +187,12 @@ public class BattleManager : MonoBehaviour
                 ChangeRepairButtonColor(repairResult, battleCommandType, player);
                 break;
         }
+        UpdateDamageValue();
     }
 
-    private void ChangeHp(Robot.AttackResult attackResult, Robot defenderRobot)
+    private void ChangeHp(int player, Robot defenderRobot)
     {
-        (_currentPlayer == 1 ? player2Hp : player1Hp).text = $"HP:{defenderRobot.Hp.ToString()}";
+        (player == 1 ? player2Hp : player1Hp).text = $"HP:{defenderRobot.Hp.ToString()}";
     }
 
     private void ChangeButtonColorAfterAttack(BattleCommandType battleCommandType, Robot.AttackResult attackResult,
