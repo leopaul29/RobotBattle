@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using Random = UnityEngine.Random;
 
 public class Robot
@@ -27,23 +29,33 @@ public class Robot
         public int BodyBrokenPoint;
         public Weapon RightWeapon;
         public Weapon LeftWeapon;
+        public int EnergyToRepairBody;
     }
 
     public int Hp { get; set; }
+    public bool IsDead => Hp <= 0;
     private int _player;
     private int _bodyBrokenPoint;
-    private int _defaultBodyBrokenPoint;
-    private Weapon _rightWeapon;
-    private Weapon _leftWeapon;
+    private readonly int _defaultBodyBrokenPoint;
+    private readonly Weapon _rightWeapon;
+    private readonly Weapon _leftWeapon;
+    private readonly int _energyToRepairBody;
+    public float Energy { get; private set; }
     public bool IsBodyBroken { get; private set; }
 
     public Robot(RobotParameter robotParameter)
     {
+        _player = robotParameter.Player;
         Hp = robotParameter.Hp;
         _bodyBrokenPoint = robotParameter.BodyBrokenPoint;
         _defaultBodyBrokenPoint = robotParameter.BodyBrokenPoint;
         _rightWeapon = robotParameter.RightWeapon;
         _leftWeapon = robotParameter.LeftWeapon;
+        _energyToRepairBody = robotParameter.EnergyToRepairBody;
+        Observable.EveryUpdate().Subscribe(_ =>
+        {
+            Energy = Math.Min((Energy + Time.deltaTime * ConstValue.EnergyRecoveryRate), 100f);
+        });
     }
     public AttackResult Attack(BattleManager.BattleCommandType battleCommandType, Robot defenderRobot)
     {
@@ -52,19 +64,21 @@ public class Robot
         var isJustBodyBroken = defenderRobot.Damage(attackResult);
         
         var weapon = battleCommandType == BattleManager.BattleCommandType.AttackRightArm ? _rightWeapon : _leftWeapon;
+        Energy = Math.Max(0, Energy - weapon.EnergyToAttack);
+        
         var isJustWeaponBroken = false;
-        if (!weapon.IsBroken)
-        {
-            isJustWeaponBroken = DrawLots(weapon.BrokenPoint);
-            if (isJustWeaponBroken)
-            {
-                weapon.Break();
-            }
-            else
-            {
-                weapon.BrokenPoint--;
-            }
-        }
+//        if (!weapon.IsBroken)
+//        {
+//            isJustWeaponBroken = DrawLots(weapon.BrokenPoint);
+//            if (isJustWeaponBroken)
+//            {
+//                weapon.Break();
+//            }
+//            else
+//            {
+//                weapon.BrokenPoint--;
+//            }
+//        }
 
         attackResult.IsJustWeaponBroken = isJustWeaponBroken;
         attackResult.IsJustBodyBroken = isJustBodyBroken;
@@ -155,9 +169,11 @@ public class Robot
                 {
                     case BattleManager.BattleCommandType.RepairRightArm:
                         _rightWeapon.Repair();
+                        Energy = Math.Max(0, Energy - _rightWeapon.EnergyToRepair);
                         break;
                     case BattleManager.BattleCommandType.RepairLeftArm:
                         _leftWeapon.Repair();
+                        Energy = Math.Max(0, Energy - _leftWeapon.EnergyToRepair);
                         break;
                     case BattleManager.BattleCommandType.RepairBody:
                         RepairBody();
@@ -187,8 +203,28 @@ public class Robot
 
     private void RepairBody()
     {
+        Energy = Math.Max(0, Energy - _energyToRepairBody);
         IsBodyBroken = false;
         _bodyBrokenPoint = _defaultBodyBrokenPoint;
+    }
+
+    public bool CanExecuteCommand(BattleManager.BattleCommandType battleCommandType)
+    {
+        switch (battleCommandType)
+        {
+            case BattleManager.BattleCommandType.AttackRightArm:
+                return _rightWeapon.EnergyToAttack <= Energy;
+            case BattleManager.BattleCommandType.AttackLeftArm:
+                return _leftWeapon.EnergyToAttack <= Energy ;
+            case BattleManager.BattleCommandType.RepairRightArm:
+                return _rightWeapon.EnergyToRepair <= Energy;
+            case BattleManager.BattleCommandType.RepairLeftArm:
+                return _leftWeapon.EnergyToRepair <= Energy;
+            case BattleManager.BattleCommandType.RepairBody:
+                return _energyToRepairBody <= Energy;
+            default:
+                return false;
+        }
     }
 }
 

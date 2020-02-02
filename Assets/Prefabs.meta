@@ -1,8 +1,15 @@
 fileFormatVersion: 2
-guid: a18539057ef341d41a24e66b9c1c38e6
+<<<<<<< HEAD
+guid: 0ed6e4c219ae25847ab0193d77b43051
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+=======
+guid: 2a148c82c5cc8744a812f2f0f3739664
+folderAsset: yes
+DefaultImporter:
+  userData: 
+>>>>>>> 530064eb57a921b74f8c0c8d00bf6c320e018e33
