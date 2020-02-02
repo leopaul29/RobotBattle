@@ -643,6 +643,11 @@ PrefabInstance:
       propertyPath: sorce1
       value: 
       objectReference: {fileID: 8300000, guid: d7099afa9170939428bfa0680e3a2595, type: 3}
+    - target: {fileID: 5118544233587494551, guid: d83e49f532426d24eafe59c8332d8aad,
+        type: 3}
+      propertyPath: particle
+      value: 
+      objectReference: {fileID: 1690614002}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d83e49f532426d24eafe59c8332d8aad, type: 3}
 --- !u!114 &1297350951 stripped
@@ -669,6 +674,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!198 &1690614002 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3327530942088996164, guid: d83e49f532426d24eafe59c8332d8aad,
+    type: 3}
+  m_PrefabInstance: {fileID: 1112602756}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1759277722
 PrefabInstance:
   m_ObjectHideFlags: 0
