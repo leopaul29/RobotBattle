@@ -33,6 +33,8 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Slider player1EnergyBar;
     [SerializeField] private Slider player2EnergyBar;
 
+    [SerializeField] private LevelLoader levelLoader;
+
     private const int MAX_HEALTH = 100;
     private const int MAX_ENERGY = 100;
     
@@ -210,7 +212,8 @@ public class BattleManager : MonoBehaviour
         }
         if (defenderRobot.IsDead)
         {
-            SceneManager.LoadScene("Result");
+            //SceneManager.LoadScene("Result");
+            levelLoader.LoadNextLevel();
         }
         //UpdateDamageValue();
     }
