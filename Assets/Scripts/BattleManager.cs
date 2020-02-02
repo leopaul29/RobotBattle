@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -186,6 +187,10 @@ public class BattleManager : MonoBehaviour
                 playerText.text = _messageBuilder.GetRepairMessage(battleCommandType, repairResult);
                 ChangeRepairButtonColor(repairResult, battleCommandType, player);
                 break;
+        }
+        if (defenderRobot.IsDead)
+        {
+            SceneManager.LoadScene("Result");
         }
         UpdateDamageValue();
     }
