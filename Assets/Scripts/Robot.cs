@@ -29,7 +29,7 @@ public class Robot
         public int BodyBrokenPoint;
         public Weapon RightWeapon;
         public Weapon LeftWeapon;
-        public int EnegyToRepairBody;
+        public int EnergyToRepairBody;
     }
 
     public int Hp { get; set; }
@@ -51,7 +51,7 @@ public class Robot
         _defaultBodyBrokenPoint = robotParameter.BodyBrokenPoint;
         _rightWeapon = robotParameter.RightWeapon;
         _leftWeapon = robotParameter.LeftWeapon;
-        _energyToRepairBody = robotParameter.EnegyToRepairBody;
+        _energyToRepairBody = robotParameter.EnergyToRepairBody;
         Observable.EveryUpdate().Subscribe(_ =>
         {
             Energy = Math.Min((Energy + Time.deltaTime * ConstValue.EnergyRecoveryRate), 100f);

@@ -93,7 +93,7 @@ public class BattleManager : MonoBehaviour
          BodyBrokenPoint = 3,
          RightWeapon = new Weapon(rightWeaponParameter),
          LeftWeapon = new Weapon(leftWeaponParameter),
-         EnegyToRepairBody = 30,
+         EnergyToRepairBody = 30,
         };
         var robot2Parameter = new Robot.RobotParameter
         {
@@ -102,11 +102,17 @@ public class BattleManager : MonoBehaviour
          BodyBrokenPoint = 3,
          RightWeapon = new Weapon(rightWeaponParameter),
          LeftWeapon = new Weapon(leftWeaponParameter),
-         EnegyToRepairBody = 30
+         EnergyToRepairBody = 30
         };
         _player1Robot = new Robot(robot1Parameter);
         _player2Robot = new Robot(robot2Parameter);
-        UpdateDamageValue();
+        //UpdateDamageValue();
+        player1AttackRightArmButton.SetDamageText(robot1Parameter.RightWeapon.EnergyToAttack.ToString());
+        player1AttackLeftArmButton.SetDamageText(robot1Parameter.LeftWeapon.EnergyToAttack.ToString());
+        player1RepairBodyButton.SetDamageText(robot1Parameter.EnergyToRepairBody.ToString());
+        player2AttackRightArmButton.SetDamageText(robot2Parameter.RightWeapon.EnergyToAttack.ToString());
+        player2AttackLeftArmButton.SetDamageText(robot2Parameter.LeftWeapon.EnergyToAttack.ToString());
+        player2RepairBodyButton.SetDamageText(robot2Parameter.EnergyToRepairBody.ToString());
     }
 
     private void UpdateDamageValue()
@@ -155,7 +161,7 @@ public class BattleManager : MonoBehaviour
         {
             SceneManager.LoadScene("Result");
         }
-        UpdateDamageValue();
+        //UpdateDamageValue();
     }
 
     private void ChangeHp(int player, Robot defenderRobot)
