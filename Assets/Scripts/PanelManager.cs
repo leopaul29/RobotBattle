@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class PanelManager : MonoBehaviour {
 
@@ -26,6 +27,11 @@ public class PanelManager : MonoBehaviour {
 
 	void Start()
     {
+	    if (SceneManager.GetActiveScene().name != "Result")
+	    {
+		    return;
+	    }
+	    
         //結果の反映
 		resultFlag1 = true;
 		resultFlag2 = false;

@@ -154,7 +154,23 @@ public class BattleManager : MonoBehaviour
 //                }
 //            }
 //        }
+
         
+                player1AttackRightArmButton.ButtonObject.enabled = _player1Robot.CanExecuteCommand(BattleCommandType.AttackRightArm);
+                player1AttackRightArmButton.SetColor(_player1Robot.CanExecuteCommand(BattleCommandType.AttackRightArm) ? ConstValue.ButtonBlue : ConstValue.ButtonGray);
+                player1AttackLeftArmButton.ButtonObject.enabled = _player1Robot.CanExecuteCommand(BattleCommandType.AttackLeftArm);
+                player1AttackLeftArmButton.SetColor(_player1Robot.CanExecuteCommand(BattleCommandType.AttackLeftArm) ? ConstValue.ButtonBlue : ConstValue.ButtonGray);
+                player1RepairBodyButton.ButtonObject.enabled = _player1Robot.CanExecuteCommand(BattleCommandType.RepairBody) && _player1Robot.IsBodyBroken;
+                player1RepairBodyButton.SetColor(!_player1Robot.IsBodyBroken ? ConstValue.ButtonGray : (_player1Robot.CanExecuteCommand(BattleCommandType.RepairBody) ? ConstValue.ButtonGreen : ConstValue.ButtonRed));
+
+                player2AttackRightArmButton.ButtonObject.enabled = _player2Robot.CanExecuteCommand(BattleCommandType.AttackRightArm);
+                player2AttackRightArmButton.SetColor(_player2Robot.CanExecuteCommand(BattleCommandType.AttackRightArm) ? ConstValue.ButtonBlue : ConstValue.ButtonGray);
+                player2AttackLeftArmButton.ButtonObject.enabled = _player2Robot.CanExecuteCommand(BattleCommandType.AttackLeftArm);
+                player2AttackLeftArmButton.SetColor(_player2Robot.CanExecuteCommand(BattleCommandType.AttackLeftArm) ? ConstValue.ButtonBlue : ConstValue.ButtonGray);
+                player2RepairBodyButton.ButtonObject.enabled = _player2Robot.CanExecuteCommand(BattleCommandType.RepairBody) && _player2Robot.IsBodyBroken;
+                player2RepairBodyButton.SetColor(!_player2Robot.IsBodyBroken ? ConstValue.ButtonGray : (_player2Robot.CanExecuteCommand(BattleCommandType.RepairBody) ? ConstValue.ButtonGreen : ConstValue.ButtonRed));
+
+            
 
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.Joystick1Button2))
         {
