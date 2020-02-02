@@ -10,9 +10,8 @@ public class ResultManage : MonoBehaviour
 	private GameObject window1;//player1
 	private GameObject window2;//player2
 
-	//結果判定用flag
-	bool resultFlag1;//player1
-	bool resultFlag2;//player2
+	//勝者
+	private int winner;
 
 	//結果Text
 	public Text player1resultText;
@@ -20,13 +19,16 @@ public class ResultManage : MonoBehaviour
 
 	void Start()
 	{
+		winner = BattleManager.WinPlayer;
+
 		window1 = GameObject.Find("Window1");
 		window2 = GameObject.Find("Window2");
 
 		//結果の反映(trueはwin, falseはLose)
 		//resultFlag1 = true;
 		//resultFlag2 = false;
-		if (resultFlag1 == true && resultFlag2 == false)
+
+		if (winner == 1)
 		{
 			player1resultText.text = "WIN!!";
 			player1resultText.color = new Color(255f / 255f, 0f / 255f, 0f / 255f);
@@ -34,7 +36,7 @@ public class ResultManage : MonoBehaviour
 			player2resultText.text = "LOSE...";
 			player2resultText.color = new Color(0f / 255f, 245f / 255f, 255f / 255f);
 		}
-		else if (resultFlag1 == false && resultFlag2 == true)
+		else if (winner == 2)
 		{
 			player1resultText.text = "LOSE...";
 			player1resultText.color = new Color(0f / 255f, 245f / 255f, 255f / 255f);
