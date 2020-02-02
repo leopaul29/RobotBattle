@@ -8,7 +8,7 @@ public class titlemanage : MonoBehaviour
     
     public void OnStartButtonClicked()
     {
-        SceneManager.LoadScene("Result");//Resultへ遷移
+        SceneManager.LoadScene("Battle");
     }
 
 }
