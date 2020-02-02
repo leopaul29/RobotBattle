@@ -16,14 +16,14 @@ public class ResultManage : MonoBehaviour
 
 	//結果Text
 	public Text player1resultText;
-	public Text repairs1;
-	public Text criticals1;
-	public Text fails1;
+	//public Text repairs1;
+	//public Text criticals1;
+	//public Text fails1;
 
     public Text player2resultText;
-	public Text repairs2;
-	public Text criticals2;
-	public Text fails2;
+	//public Text repairs2;
+	//public Text criticals2;
+	//public Text fails2;
 
 	void Start()
 	{
@@ -56,13 +56,13 @@ public class ResultManage : MonoBehaviour
 			player2resultText.color = new Color(0f / 255f, 255f / 255f, 0f / 255f);
 		}
 
-		repairs1.text = "Repairs: ";
-		criticals1.text = "Criticals: ";
-		fails1.text = "Fails: ";
+		//repairs1.text = "Repairs: ";
+		//criticals1.text = "Criticals: ";
+		//fails1.text = "Fails: ";
 
-		repairs2.text = "Repairs: ";
-		criticals2.text = "Criticals: ";
-		fails2.text = "Fails: ";
+		//repairs2.text = "Repairs: ";
+		//criticals2.text = "Criticals: ";
+		//fails2.text = "Fails: ";
 
 	}
     void Update()

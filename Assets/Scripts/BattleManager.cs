@@ -228,7 +228,7 @@ public class BattleManager : MonoBehaviour
         if (defenderRobot.IsDead)
         {
             WinPlayer = player;
-            SceneManager.LoadScene("Result");
+            SceneManager.LoadScene("ResultScene");
         }
         //UpdateDamageValue();
     }
