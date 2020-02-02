@@ -33,8 +33,8 @@ public class PanelManager : MonoBehaviour {
 	    }
 	    
         //結果の反映
-		resultFlag1 = true;
-		resultFlag2 = false;
+		resultFlag1 = BattleManager.WinPlayer == 1;
+		resultFlag2 = !resultFlag1;
         if(resultFlag1 == true && resultFlag2 == false)
         {
 			player1resultText.text = "WIN!!";

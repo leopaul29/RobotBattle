@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
 {
+    public static int WinPlayer;
     [SerializeField] private BattleCommandButton player1AttackRightArmButton;
     [SerializeField] private BattleCommandButton player1AttackLeftArmButton;
     [SerializeField] private BattleCommandButton player1RepairRightArmButton;
@@ -229,6 +230,7 @@ public class BattleManager : MonoBehaviour
         if (defenderRobot.IsDead)
         {
             //SceneManager.LoadScene("Result");
+            WinPlayer = player;
             levelLoader.LoadNextLevel();
         }
         //UpdateDamageValue();
