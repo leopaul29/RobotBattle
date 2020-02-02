@@ -31,7 +31,7 @@ public class PanelManager : MonoBehaviour {
 		resultFlag2 = false;
         if(resultFlag1 == true && resultFlag2 == false)
         {
-			player1resultText.text = "WIN!!";
+            player1resultText.text = "WIN!!";
 			player1resultText.color = new Color(255f / 255f, 0f / 255f, 0f / 255f);
 
             player2resultText.text = "LOSE...";

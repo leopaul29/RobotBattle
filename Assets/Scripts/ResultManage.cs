@@ -7,6 +7,6 @@ public class ResultManage : MonoBehaviour
 {
     public void OnStartButtonClicked()
     {
-        SceneManager.LoadScene("Menu 3D");
+        SceneManager.LoadScene("Menu 3D");//Menu 3Dへ遷移
     }
 }

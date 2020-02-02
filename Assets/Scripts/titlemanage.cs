@@ -5,10 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class titlemanage : MonoBehaviour
 {
-
+    
     public void OnStartButtonClicked()
     {
-        SceneManager.LoadScene("Result");
+        SceneManager.LoadScene("Result");//Resultへ遷移
     }
 
 }
