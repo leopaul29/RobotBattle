@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -15,7 +16,14 @@ public class ResultManage : MonoBehaviour
 
 	//結果Text
 	public Text player1resultText;
-	public Text player2resultText;
+	public Text repairs1;
+	public Text criticals1;
+	public Text fails1;
+
+    public Text player2resultText;
+	public Text repairs2;
+	public Text criticals2;
+	public Text fails2;
 
 	void Start()
 	{
@@ -23,10 +31,6 @@ public class ResultManage : MonoBehaviour
 
 		window1 = GameObject.Find("Window1");
 		window2 = GameObject.Find("Window2");
-
-		//結果の反映(trueはwin, falseはLose)
-		//resultFlag1 = true;
-		//resultFlag2 = false;
 
 		if (winner == 1)
 		{
@@ -52,13 +56,32 @@ public class ResultManage : MonoBehaviour
 			player2resultText.color = new Color(0f / 255f, 255f / 255f, 0f / 255f);
 		}
 
+		repairs1.text = "Repairs: ";
+		criticals1.text = "Criticals: ";
+		fails1.text = "Fails: ";
+
+		repairs2.text = "Repairs: ";
+		criticals2.text = "Criticals: ";
+		fails2.text = "Fails: ";
+
 	}
     void Update()
     {
-        if ( (window1.activeSelf == false) && (window2.activeSelf == false))
+		if (Input.GetKeyDown("joystick button 1"))
+		{
+			window1.SetActive(false);
+
+		} else if (Input.GetKeyDown(KeyCode.L))
+        {
+			window2.SetActive(false);
+        }
+
+
+		if ( (window1.activeSelf == false) && (window2.activeSelf == false))
         {
 			SceneManager.LoadScene("Menu 3D");//Menu 3Dへ遷移
 		}
+
 	}
 
 }
