@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 6042154190566284308}
   - component: {fileID: 6042154190566284306}
   - component: {fileID: 6042154190566284311}
+  - component: {fileID: 4251239882236687566}
+  - component: {fileID: 5073709392607599034}
   - component: {fileID: 6042154190566284307}
   m_Layer: 0
   m_Name: Robot_shoot 1
@@ -49,6 +51,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -91,7 +94,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6042154190566284310}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c194e2bd0322eaa4096f922cba469676, type: 3}
   m_Name: 
@@ -106,6 +109,10 @@ MonoBehaviour:
   count: 0
   X_Min: 0
   Right: {fileID: 4623942132696774667, guid: 16ed19e6130c0ae4698fce34cb2c82a2, type: 3}
+  sorce1: {fileID: 0}
+  sorce2: {fileID: 0}
+  sorce3: {fileID: 0}
+  sorce4: {fileID: 0}
 --- !u!95 &6042154190566284311
 Animator:
   serializedVersion: 3
@@ -125,7 +132,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6042154190566284307
+--- !u!114 &4251239882236687566
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,6 +140,30 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6042154190566284310}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54fbdfab987919e42a1d41fc0bd7e8c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5073709392607599034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6042154190566284310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9100aeb5237d1e439b55db7b728ab95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6042154190566284307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6042154190566284310}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1580fd58034937a499b81c7eb65efda3, type: 3}
   m_Name: 
@@ -144,6 +175,9 @@ MonoBehaviour:
   count: 0
   Timer: 0
   particle: {fileID: 6042154191256706845}
+  sound1: {fileID: 0}
+  sound2: {fileID: 0}
+  sound3: {fileID: 0}
 --- !u!1 &6042154191256706847
 GameObject:
   m_ObjectHideFlags: 0
@@ -4849,6 +4883,7 @@ ParticleSystemRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

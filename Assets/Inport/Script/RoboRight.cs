@@ -16,9 +16,17 @@ public class RoboRight : MonoBehaviour
     public float Timer;
     [SerializeField] private ParticleSystem particle;
     Vector3 pos;
+
+    public AudioClip sound1;
+    public AudioClip sound2;
+    public AudioClip sound3;
+    AudioSource audioSource;
+
+
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         pos = transform.position;
         particle.Stop();
         
@@ -50,11 +58,12 @@ public class RoboRight : MonoBehaviour
             }
         }
     }
-     public void OnClick()
+     public void OnClickc()
     {
 
 
         Instantiate(reza, transform.position, Quaternion.identity);
+        audioSource.PlayOneShot(sound1);
         Invoke("a", 4);
    
         
@@ -62,11 +71,13 @@ public class RoboRight : MonoBehaviour
     void a()
     {
         Instantiate(bakuha, transform.position, Quaternion.identity);
+        audioSource.PlayOneShot(sound2);
         Invoke("b", 3.5f);
     }
     void b()
     {        
         particle.Play();
+        audioSource.PlayOneShot(sound3);
         count++;
     }
 }

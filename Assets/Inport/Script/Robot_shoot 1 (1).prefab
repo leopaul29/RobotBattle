@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 5952106369188495728}
   - component: {fileID: 5952106369188495502}
   - component: {fileID: 5952106369188495503}
+  - component: {fileID: 5038824550183204150}
+  - component: {fileID: 4831349003831253794}
   m_Layer: 0
   m_Name: Robot_shoot 1 (1)
   m_TagString: Player2
@@ -47,6 +49,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -108,7 +111,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5952106369188495501}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 484c3e1458473904193b11a398606439, type: 3}
   m_Name: 
@@ -120,3 +123,35 @@ MonoBehaviour:
   enemy: {fileID: 0}
   DamegeEfect: {fileID: 4948688945492629444, guid: 8488441eb647fba4999c1306e74ef7df,
     type: 3}
+  count: 0
+  X_Min: 0
+  Right: {fileID: 0}
+  sorce1: {fileID: 0}
+  sorce2: {fileID: 0}
+  sorce3: {fileID: 0}
+--- !u!114 &5038824550183204150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5952106369188495501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54fbdfab987919e42a1d41fc0bd7e8c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particle: {fileID: 0}
+  sound1: {fileID: 0}
+--- !u!114 &4831349003831253794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5952106369188495501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d3ca5fd9c1145449a82026986abfb4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

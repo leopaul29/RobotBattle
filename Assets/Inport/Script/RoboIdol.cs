@@ -30,9 +30,17 @@ public class RoboIdol : MonoBehaviour
     public GameObject Right;
 
     private Vector3 Pos;
+
+    public AudioClip sorce1;
+    public AudioClip sorce2;
+    public AudioClip sorce3;
+    public AudioClip sorce4;
+    private AudioSource audio;
+
     // Start is called before the first frame update
     void Start()
     {
+        audio = GetComponent<AudioSource>();
         Pos = transform.position;
         //相手を見る
         enemy = GameObject.FindGameObjectWithTag("Player2");
@@ -72,6 +80,7 @@ public class RoboIdol : MonoBehaviour
         shoot.SetBool("ShootTriger", true);
         //目の前に銃弾オブジェクトを作成
         Instantiate(tama, transform.position+new Vector3(2,0,0),Quaternion.identity);
+        audio.PlayOneShot(sorce1);
         //3秒後にaを読み込む
         Invoke("a", 3);
        
@@ -83,17 +92,20 @@ public class RoboIdol : MonoBehaviour
         
         this.transform.position -= new Vector3( 3* Time.deltaTime, 0);
         Instantiate(Right, transform.position, Quaternion.identity);
-
+        audio.PlayOneShot(sorce2);
         shoot.SetBool("ShootTriger", false);
 
-        //１秒後にbを読み込む
+        //3秒後にbを読み込む
         Invoke("b", 3);
     }
     void b()
     {
+        audio.Stop();
         this.transform.Translate(-2, 0, 0);
         //見ている敵の座標に当たったかのようなオブジェクトを作成
         Instantiate(DamegeEfect, enemy.transform.position, Quaternion.identity);
+        audio.PlayOneShot(sorce3);
+
         Invoke("c",6);
     }
     void c()

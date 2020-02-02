@@ -1,32 +1,42 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class RoboIdoReverse : MonoBehaviour
-{
+public class RoboZyakuHit : MonoBehaviour
+{//上昇、下降のbool
     bool m_xPlus = true;
+    //上昇する距離
     public float Max;
+    //上昇がマックスに行ったとき下に降りる距離
     public float Min;
+    //idolかどうかのチェック
     bool on = true;
+    //アニメーション
     public Animator shoot;
+    //プレイヤーの前から出る球
     public GameObject tama;
-    public GameObject enemy;
+    public AudioClip sorce1;
+    public AudioClip sorce2;
+    private AudioSource audio;
+    Vector3 Pos;
     public GameObject DamegeEfect;
+    public GameObject enemy;
     // Start is called before the first frame update
     void Start()
     {
-        enemy = GameObject.FindGameObjectWithTag("Player");
+        audio = GetComponent<AudioSource>();
+        Pos = transform.position;
+        //相手を見る
+        enemy = GameObject.FindGameObjectWithTag("Player2");
+        //アニメーターを取得
         shoot = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //待機モーションの上下
-        //もし打つアニメーションをしてないとき
-        if (on == true)
-        {
+       
+        
             if (m_xPlus)
             {
                 transform.position += new Vector3(0, 0.15f * Time.deltaTime, 0f);
@@ -39,34 +49,24 @@ public class RoboIdoReverse : MonoBehaviour
                 if (transform.position.y <= Min)
                     m_xPlus = true;
             }
-        }
+        
 
     }
-    //もしボタンをクリックしたとき
     public void OnClick()
     {
-        //boolをオンからオフにする
-        on = false;
-        //アニメーションの打ってるときを再生
+        //adolストップ
+        
+        //アニメーションを再生
         shoot.SetBool("ShootTriger", true);
-        //アニメーションがついた玉オブジェクトを前にだす
-        Instantiate(tama, transform.position + new Vector3(-2, 0, 0), Quaternion.identity);
-        //3秒後にaを読み込む
+        //目の前に銃弾オブジェクトを作成
+        Instantiate(tama, transform.position + new Vector3(2, 0, 0), Quaternion.identity);
+        audio.PlayOneShot(sorce1);
         Invoke("a", 3);
     }
-    void a()
+   void a()
     {
-        //boolをオンにする
-        on = true;
-        //アニメーションをidolに戻す
-        shoot.SetBool("ShootTriger", false);
-        //3秒後にbを読み込む
-        Invoke("b", 3);
-    }
-    void b()
-    {
-        //敵の位置に弾が当たったかのようなオブジェクトを生み出す
         Instantiate(DamegeEfect, enemy.transform.position, Quaternion.identity);
+        audio.PlayOneShot(sorce2);
+        shoot.SetBool("ShootTriger", false);
     }
 }
-
