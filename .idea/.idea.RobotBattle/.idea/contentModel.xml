@@ -330,6 +330,7 @@
           <e p="ApplicationManager.cs" t="Include" />
           <e p="BattleCommandButton.cs" t="Include" />
           <e p="BattleManager.cs" t="Include" />
+          <e p="BgmObject.cs" t="Include" />
           <e p="ButtonClickSound.cs" t="Include" />
           <e p="ChangeColor.cs" t="Include" />
           <e p="ConstValue.cs" t="Include" />
