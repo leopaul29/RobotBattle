@@ -18,4 +18,7 @@ public static class ConstValue
     public static readonly int RepairFumbleRate = 10;
     
     public static readonly float CriticalDamageRate = 2.0f;
+
+    //public static readonly float EnergyRecoveryRate = 0.00666f;
+    public static readonly float EnergyRecoveryRate = 3f;
 }

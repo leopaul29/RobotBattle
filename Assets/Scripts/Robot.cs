@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using Random = UnityEngine.Random;
 
 public class Robot
@@ -33,18 +35,24 @@ public class Robot
     public bool IsDead => Hp <= 0;
     private int _player;
     private int _bodyBrokenPoint;
-    private int _defaultBodyBrokenPoint;
-    private Weapon _rightWeapon;
-    private Weapon _leftWeapon;
+    private readonly int _defaultBodyBrokenPoint;
+    private readonly Weapon _rightWeapon;
+    private readonly Weapon _leftWeapon;
+    public float Energy { get; private set; }
     public bool IsBodyBroken { get; private set; }
 
     public Robot(RobotParameter robotParameter)
     {
+        _player = robotParameter.Player;
         Hp = robotParameter.Hp;
         _bodyBrokenPoint = robotParameter.BodyBrokenPoint;
         _defaultBodyBrokenPoint = robotParameter.BodyBrokenPoint;
         _rightWeapon = robotParameter.RightWeapon;
         _leftWeapon = robotParameter.LeftWeapon;
+        Observable.EveryUpdate().Subscribe(_ =>
+        {
+            Energy = Math.Min((Energy + Time.deltaTime * ConstValue.EnergyRecoveryRate), 100f);
+        });
     }
     public AttackResult Attack(BattleManager.BattleCommandType battleCommandType, Robot defenderRobot)
     {
