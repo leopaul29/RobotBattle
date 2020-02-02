@@ -10,8 +10,36 @@
             <e p="LICENSE.txt" t="Include" />
           </e>
         </e>
+        <e p="Inport" t="Include">
+          <e p="Script" t="Include">
+            <e p="DesutoroyShot.cs" t="Include" />
+            <e p="Enemybakuha.cs" t="Include" />
+            <e p="RoboDefens.cs" t="Include" />
+            <e p="RoboIdol.cs" t="Include" />
+            <e p="RoboIdoRevese.cs" t="Include" />
+            <e p="RoboKyouHit.cs" t="Include" />
+            <e p="RoboRight.cs" t="Include" />
+            <e p="RoboZyakuHit.cs" t="Include" />
+            <e p="RoboZyakuR.cs" t="Include" />
+          </e>
+        </e>
         <e p="Materials" t="Include">
           <e p="UI-Default-No-Alpha.shader" t="Include" />
+        </e>
+        <e p="PinwheelFantasyEffect" t="Include">
+          <e p="README.txt" t="Include" />
+          <e p="Script" t="Include">
+            <e p="DemoManager.cs" t="Include" />
+            <e p="Editor" t="Include">
+              <e p="CompileLogger.cs" t="Include" />
+              <e p="PolarisV2AdsWindow.cs" t="Include" />
+            </e>
+            <e p="FairyDustRandomPosition.cs" t="Include" />
+            <e p="FairyMeteorAddForceDemo.cs" t="Include" />
+            <e p="Fireball.cs" t="Include" />
+            <e p="Spin.cs" t="Include" />
+            <e p="Test.cs" t="Include" />
+          </e>
         </e>
         <e p="Plugins" t="Include">
           <e p="UniRx" t="Include">
@@ -296,6 +324,7 @@
         <e p="Robot Shooting Game" t="Include">
           <e p="Read Me.txt" t="Include" />
         </e>
+        <e p="rotation.cs" t="Include" />
         <e p="Scripts" t="Include">
           <e p="ActiveStateToggler.cs" t="Include" />
           <e p="ApplicationManager.cs" t="Include" />
