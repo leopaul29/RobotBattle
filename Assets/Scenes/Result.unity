@@ -3543,8 +3543,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initiallyOpen: {fileID: 0}
-  player1resultText: {fileID: 0}
-  player2resultText: {fileID: 0}
 --- !u!4 &1150678004
 Transform:
   m_ObjectHideFlags: 0
@@ -5149,7 +5147,6 @@ GameObject:
   - component: {fileID: 1869524099}
   - component: {fileID: 1869524102}
   - component: {fileID: 1869524101}
-  - component: {fileID: 1869524100}
   m_Layer: 5
   m_Name: Window1
   m_TagString: Untagged
@@ -5182,20 +5179,6 @@ RectTransform:
   m_AnchoredPosition: {x: 261.68, y: 0}
   m_SizeDelta: {x: 523.4, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1869524100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1869524098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f90a13f6320e74ef5812ad6e536ac2f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player1resultText: {fileID: 0}
-  player2resultText: {fileID: 0}
 --- !u!114 &1869524101
 MonoBehaviour:
   m_ObjectHideFlags: 0
