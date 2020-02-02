@@ -352,6 +352,11 @@ PrefabInstance:
       propertyPath: m_Text
       value: Energy:100
       objectReference: {fileID: 0}
+    - target: {fileID: 1681651235969649612, guid: 98bc778d2fdce45469746bf9cfd41fb8,
+        type: 3}
+      propertyPath: m_Text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1681651236167102012, guid: 98bc778d2fdce45469746bf9cfd41fb8,
         type: 3}
       propertyPath: m_RootOrder
@@ -395,7 +400,7 @@ PrefabInstance:
     - target: {fileID: 4887971131168992336, guid: 98bc778d2fdce45469746bf9cfd41fb8,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6547455345856316920, guid: 98bc778d2fdce45469746bf9cfd41fb8,
         type: 3}
